@@ -54,7 +54,9 @@ class _Setting:
 
 		# Initialize lower-level config parser
 		self._parser = configparser.ConfigParser()
-		self._parser.read(_path)
+
+		# Make parser preserve case
+		self._parser.optionxform = str
 
 		# Make sure that file path is set
 		if _path is None:
