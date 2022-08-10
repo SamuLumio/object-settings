@@ -1,6 +1,6 @@
 # object-settings
 
-Simple object-oriented config library, where your settings are objects.
+Simple object-oriented Python config library, where your settings are objects.
 
 Their values get saved to a standard config location, depending on the os (uses `appdirs` package for paths). The file is automatically written and read in the background, so you don't have to worry about it, and it's quick to define and use settings (see examples below)
 
