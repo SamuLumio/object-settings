@@ -1,6 +1,6 @@
 [project]
 name = "object-settings"
-version = "1.0.1"
+version = "1.1.dev"
 description = "Simple object-oriented config library, where your settings are objects"
 readme = "README.md"
 

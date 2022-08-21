@@ -52,15 +52,15 @@ class _Setting:
 		self.default = default
 		self.section = 'SETTINGS'
 
+		# Make sure that file path is set
+		if _path is None:
+			raise _NotSetupError
+
 		# Initialize lower-level config parser
 		self._parser = configparser.ConfigParser()
 
 		# Make parser preserve case
 		self._parser.optionxform = str
-
-		# Make sure that file path is set
-		if _path is None:
-			raise _NotSetupError
 
 		# Make sure that file/section/option exists
 		for i in range(3):
