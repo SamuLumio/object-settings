@@ -21,6 +21,10 @@ import os
 _path: typing.Union[str, None] = None
 """Path of the config file all settings will be saved to / read from"""
 
+all = []
+"""List of all created settings"""
+
+
 
 def setup(app_name):
 	"""Creates the config path with your app name. Required to use the package."""
@@ -73,6 +77,12 @@ class _Setting:
 				self._parser.set(self.section, self.name, str(self.default))
 				with open(_path, 'w') as f:
 					self._parser.write(f)
+
+		# Append to list of all settings
+		if self not in all:
+			all.append(self)
+
+
 
 
 	def get(self):
