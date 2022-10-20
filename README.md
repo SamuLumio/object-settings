@@ -41,12 +41,21 @@ Or if a setting is only checked in one place, it can be used without defining a 
 (though it doesn't matter if the same setting is initialized multiple times)
 
 
+## There's also sections
+
+Optionally, if you have a lot of settings, you can organize them into sections (which works also well with UIs)
+
+    download_options = settings.Section("Downloader settings")
+    speed = settings.Number("Speed limit", 5, download_options)
+    dir = settings.Path("Target directory", '/home/yomama/Downloads', download_options)
+
+
 ## Setting types
 
 List of currently available setting types and the variables they use as values:
 
 - Toggle (bool)
-- Choice (any)  [from a list of options]
+- Choice (str)  [from a list of options]
 - Multichoice (list)  [of things from a list of options]
 - Text (str)
 - Path (str)
