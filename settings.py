@@ -26,9 +26,12 @@ all = []
 
 
 
-def setup(app_name):
+def setup(app_name, custom_dir: str = None):
 	"""Creates the config path with your app name. Required to use the package."""
-	config_dir = appdirs.user_config_dir(app_name)
+	if isinstance(custom_dir, str):
+		config_dir = custom_dir
+	else:
+		config_dir = appdirs.user_config_dir(app_name)
 	os.makedirs(config_dir, exist_ok=True)
 	global _path
 	_path = os.path.join(config_dir, 'settings.cfg')
