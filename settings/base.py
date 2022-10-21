@@ -85,4 +85,6 @@ class Setting:
 	def __eq__(self, other):
 		if isinstance(other, Setting):
 			return (other.name == self.name) and (other.section == self.section)
+		elif isinstance(other, self.datatype):
+			return self.value == other
 
