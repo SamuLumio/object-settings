@@ -18,30 +18,17 @@ class Section:
 		return os.path.join(dir.get(), self.name + '.cfg')
 
 
-	# def add(self, *settings):
-	# 	for setting in settings:
-	# 		if setting not in self.settings:
-	# 			self.settings.append(setting)
-
 
 all_sections: list[Section] = []
 default_section = Section('Settings')
 
-
-# default_section: Section = Section
-#
-#
-# def _setup_default_section():
-# 	"""A separate function, so it can be called after directory has been set"""
-# 	global default_section
-# 	default_section = Section('Settings')
 
 
 
 class Setting:
 	"""Base setting class"""
 	def __init__(self, datatype, name: str, default, section: Section = default_section):
-		self.type = datatype
+		self.datatype = datatype
 		self.name = name
 		self.default = default
 		self.section = section
@@ -57,10 +44,24 @@ class Setting:
 			self.set(self.default)
 
 
+	def validate(self, value) -> bool:
+		return type(value) == self.datatype
+		# Expanded within each setting type
+
+
+
 	def get(self):
-		return self.section.file.get(self.name, self.type)
+		"""Return stored value, or the default if invalid or missing"""
+		value = self.section.file.get(self.name, self.datatype)
+		if self.validate(value):
+			return value
+		else:
+			return self.default
 
 	def set(self, new_value):
+		valid = self.validate(new_value)
+		if not valid:
+			raise ValueError(f"New setting value {new_value} is invalid")
 		self.section.file.set(self.name, new_value)
 
 
