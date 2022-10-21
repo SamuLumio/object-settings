@@ -28,7 +28,10 @@ class ConfigFile:
 
 
 	def reload(self):
-		self._parser.read(self.path)
+		try:
+			self._parser.read(self.path)
+		except:
+			self._write()
 
 	def _write(self):
 		os.makedirs(os.path.dirname(self.path), exist_ok=True)
