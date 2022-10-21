@@ -61,4 +61,5 @@ class ConfigFile:
 
 
 	def keys(self):
+		self.reload()
 		return self._parser.options(self.title)
