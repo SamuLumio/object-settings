@@ -37,7 +37,8 @@ class Setting:
 		# 	_setup_default_section()
 		
 		# self.section.add(self)
-		self.section.settings.append(self)
+		if self not in self.section.settings:
+			self.section.settings.append(self)
 
 		# Make sure that file/section/option exists
 		if self.name not in self.section.file.keys():
@@ -79,3 +80,9 @@ class Setting:
 
 	def __iter__(self):
 		return self.value.__iter__()
+
+
+	def __eq__(self, other):
+		if isinstance(other, Setting):
+			return (other.name == self.name) and (other.section == self.section)
+
