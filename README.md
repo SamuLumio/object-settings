@@ -1,8 +1,8 @@
 # object-settings
 
-Simple object-oriented Python config library, where your settings are objects.
+Simple-to-use object-oriented Python config library, where your settings are objects.
 
-Their values have automatic validation and get saved to a file that's seamlessly written and read in the background, so you don't have to worry about it, and it's quick to define and use settings (see examples below)
+Their values have automatic validation and get saved to a file that's seamlessly written and read in the background, so you don't have to worry about any of it. This makes it quick to define and use settings (see examples below).
 
 
 Installation & usage
@@ -54,7 +54,7 @@ The setting objects support "equals"-checking with actual values:
     print(speed == 3)
     >> False
 
-In addition, they work with many type-specific operation:
+In addition, they work with many type-specific operations:
 
     for selection in settings.Multichoice():
         ...
@@ -68,7 +68,7 @@ Automatic storing
 
 When a setting's value is read/set, object-settings automatically creates and updates a config file on the disk in the background. Any file deletions or unparsable external modifications are also handled.
 
-By default, the files are saved to a standard config location, depending on the platform (uses `appdirs` package for paths). You can also set a custom directory for e.g. running in a Docker container.
+By default, the files are saved to a standard config location, depending on the platform (uses [appdirs](https://github.com/ActiveState/appdirs) package for paths). You can also set a custom directory for e.g. running in a Docker container.
 
 
 Value validation

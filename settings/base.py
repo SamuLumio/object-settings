@@ -33,14 +33,10 @@ class Setting:
 		self.default = default
 		self.section = section
 
-		# if self.section == default_section and type(default_section) != section:
-		# 	_setup_default_section()
-		
-		# self.section.add(self)
 		if self not in self.section.settings:
 			self.section.settings.append(self)
 
-		# Make sure that file/section/option exists
+		# Make sure that option exists in fle
 		if self.name not in self.section.file.keys():
 			self.set(self.default)
 
@@ -60,6 +56,7 @@ class Setting:
 			return self.default
 
 	def set(self, new_value):
+		"""Validate and set a new value. Invalid values will raise a ValueError."""
 		valid = self.validate(new_value)
 		if not valid:
 			raise ValueError(f"New setting value {new_value} is invalid")
@@ -69,6 +66,7 @@ class Setting:
 	@property
 	def value(self):
 		return self.get()
+
 
 	@value.setter
 	def value(self, new_value):
@@ -83,6 +81,7 @@ class Setting:
 
 
 	def __eq__(self, other):
+		"""Supports comparing with actual types (and other settings)"""
 		if isinstance(other, Setting):
 			return (other.name == self.name) and (other.section == self.section)
 		elif isinstance(other, self.datatype):

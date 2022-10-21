@@ -17,6 +17,7 @@ def setup(app_name, custom_dir: str = None):
 
 
 def get():
+	"""Return where the config values are being stored"""
 	if isinstance(_dir, str):
 		return _dir
 	else:
