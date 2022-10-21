@@ -1,4 +1,4 @@
-# object-settings
+# object-settings 2.0
 
 Simple-to-use object-oriented Python config library, where your settings are objects.
 
