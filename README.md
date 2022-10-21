@@ -2,16 +2,16 @@
 
 Simple object-oriented Python config library, where your settings are objects.
 
-Their values get saved to a standard config location, depending on the os (uses `appdirs` package for paths). The file is automatically written and read in the background, so you don't have to worry about it, and it's quick to define and use settings (see examples below)
+Their values have automatic validation and get saved to a file that's seamlessly written and read in the background, so you don't have to worry about it, and it's quick to define and use settings (see examples below)
 
 
-## Installation
+Installation & usage
+====================
 
 This module is on PyPi, so you can just do
 `pip install object-settings`
 
-
-## Usage
+After which it will be available with just the package name `settings`
 
     import settings
     settings.setup("Your app name")
@@ -20,9 +20,10 @@ This module is on PyPi, so you can just do
     your_option2 = settings.Number("Your second option label")
 
 
-## Examples
+Simple objects
+==============
 
-You can set a font size at the top of your ui file:
+For example, you can set a font size at the top of your ui file:
 
     font = settings.Number(default=14)
 
@@ -38,21 +39,60 @@ Or if a setting is only checked in one place, it can be used without defining a 
     if settings.Toggle("Update app automatically", default=True):
         # do update
 
-(though it doesn't matter if the same setting is initialized multiple times)
+(it doesn't matter if the same setting is initialized multiple times)
 
 
-## There's also sections
+Integration
+===========
 
-Optionally, if you have a lot of settings, you can organize them into sections (which works also well with UIs)
+The setting objects support "equals"-checking with actual values:
+
+    speed = settings.Number("Speed limit", 5)
+    
+    print(speed == 5)
+    >> True
+    print(speed == 3)
+    >> False
+
+In addition, they work with many type-specific operation:
+
+    for selection in settings.Multichoice():
+        ...
+
+    if settings.Toggle():
+        ...
+
+
+Automatic storing
+=================
+
+When a setting's value is read/set, object-settings automatically creates and updates a config file on the disk in the background. Any file deletions or unparsable external modifications are also handled.
+
+By default, the files are saved to a standard config location, depending on the platform (uses `appdirs` package for paths). You can also set a custom directory for e.g. running in a Docker container.
+
+
+Value validation
+================
+
+When a new value is set, it automatically gets validated and raises a `ValueError` if it doesn't pass. This validation includes more than just datatypes, for example numbers can have min/max limits or a path setting can be set to require an existing path.
+
+
+Sections
+========
+
+Optionally, if you have a lot of settings, you can organize them into sections (which also works well with UIs)
 
     download_options = settings.Section("Downloader settings")
-    speed = settings.Number("Speed limit", 5, download_options)
-    dir = settings.Path("Target directory", '/home/yomama/Downloads', download_options)
+    speed = settings.Number("Speed limit", 5, section=download_options)
+    dir = settings.Path("Target directory", '/home/yomama/Downloads', section=download_options)
+    server = settings.Choice("Mirror", ["Europe", "Asia", "America", "Africa"], "Asia", section=download_options)
 
 
-## Setting types
 
-List of currently available setting types and the variables they use as values:
+Setting types
+=============
+
+List of currently available setting types:
 
 - Toggle (bool)
 - Choice (str)  [from a list of options]
