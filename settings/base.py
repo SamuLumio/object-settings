@@ -11,7 +11,8 @@ class Section:
 	def __init__(self, name: str):
 		self.name = name
 		self.settings = []
-		self.file = parser.ConfigFile(self.get_path)
+		self.file = parser.ConfigFile(self.get_path, title=self.name)
+		all_sections.append(self)
 
 	def get_path(self):
 		return os.path.join(dir.get(), self.name + '.cfg')
@@ -23,6 +24,7 @@ class Section:
 	# 			self.settings.append(setting)
 
 
+all_sections: list[Section] = []
 default_section = Section('Settings')
 
 
