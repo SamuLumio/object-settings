@@ -79,7 +79,7 @@ class Multichoice(base.Setting):
 			all((item in self.options) for item in value),
 			all((type(item) == str) for item in value)
 		]
-		return all(*conditions)
+		return all(conditions)
 
 
 	def get(self) -> list[str]:
