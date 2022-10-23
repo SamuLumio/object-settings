@@ -63,6 +63,11 @@ class Setting:
 		self.section.file.set(self.name, new_value)
 
 
+	def reset(self):
+		"""Sets the setting back to its default value"""
+		self.set(self.default)
+
+
 	@property
 	def value(self):
 		return self.get()
