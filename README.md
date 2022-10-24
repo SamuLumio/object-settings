@@ -8,8 +8,7 @@ Their values have automatic validation and get saved to a file that's seamlessly
 Installation & usage
 ====================
 
-This module is on PyPi, so you can just do
-`pip install object-settings`
+This module is on PyPi, so you can just do `pip install object-settings`
 
 After which it will be available with just the package name `settings`
 

@@ -3,7 +3,7 @@ from . import base
 
 
 # Yes, all of these overlayed methods have to exist for IDE features to work,
-# one does not simply type hint an inherited variable
+# one does not simply re- type hint an inherited variable
 
 
 class Toggle(base.Setting):
