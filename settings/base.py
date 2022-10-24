@@ -1,4 +1,4 @@
-import os
+import os, threading, typing
 
 from . import dir, parser
 
@@ -32,6 +32,7 @@ class Setting:
 		self.name = name
 		self.default = default
 		self.section = section
+		self.listeners = []
 
 		if self not in self.section.settings:
 			self.section.settings.append(self)
@@ -39,6 +40,11 @@ class Setting:
 		# Make sure that option exists in fle
 		if self.name not in self.section.file.keys():
 			self.set(self.default)
+
+
+	def add_listener(self, function: typing.Callable[[], None]):
+		if function not in self.listeners:
+			self.listeners.append(function)
 
 
 	def validate(self, value) -> bool:
@@ -62,6 +68,9 @@ class Setting:
 			raise ValueError(f"New setting value {new_value} is invalid")
 		self.section.file.set(self.name, new_value)
 
+		for listener in self.listeners:
+			threading.Thread(target=listener, daemon=True).start()
+
 
 	def reset(self):
 		"""Sets the setting back to its default value"""
@@ -71,7 +80,6 @@ class Setting:
 	@property
 	def value(self):
 		return self.get()
-
 
 	@value.setter
 	def value(self, new_value):

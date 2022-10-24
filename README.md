@@ -77,6 +77,17 @@ Value validation
 When a new value is set, it automatically gets validated and raises a `ValueError` if it doesn't pass. This validation includes more than just datatypes, for example numbers can have min/max limits or a path setting can be set to require an existing path.
 
 
+Listen for changes
+==================
+
+If you have some update function that you want to be called when a setting is changed, you can add that function as a listener:
+
+    setting.add_listener(your_function)
+
+Now the function will be called every time when a new value is set.
+
+
+
 Sections
 ========
 
