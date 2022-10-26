@@ -1,8 +1,12 @@
+
 # object-settings
 
 Simple-to-use object-oriented Python config library, where your settings are objects.
 
-Their values have automatic validation and get saved to a file that's seamlessly written and read in the background, so you don't have to worry about any of it. This makes it quick to define and use settings (see examples below).
+Their values have automatic validation and get saved to a file that's seamlessly
+written and read in the background, so you don't have to worry about any of it. 
+This makes it quick to define and use settings (see examples below).
+
 
 
 Installation & usage
@@ -19,6 +23,7 @@ After which it will be available with just the package name `settings`
     your_option2 = settings.Number("Your second option label")
 
 
+
 Simple objects
 ==============
 
@@ -32,13 +37,13 @@ For example, you can set a font size at the top of your ui file:
     someuilib.Textbox("Lorem ipsum dolor...", font_size=font.value)
     ...
 
-
 Or if a setting is only checked in one place, it can be used without defining a variable:
 
     if settings.Toggle("Update app automatically", default=True):
         # do update
 
 (it doesn't matter if the same setting is initialized multiple times)
+
 
 
 Integration
@@ -62,26 +67,36 @@ In addition, they work with many type-specific operations:
         ...
 
 
+
 Automatic storing
 =================
 
-When a setting's value is read/set, object-settings automatically creates and updates a config file on the disk in the background. Any file deletions or unparsable external modifications are also handled.
+When a setting's value is read/set, object-settings automatically creates and updates 
+a config file on the disk in the background. 
+Any file deletions or unparsable external modifications are also handled.
 
-By default, the files are saved to a standard config location, depending on the platform (uses [appdirs](https://github.com/ActiveState/appdirs) package for paths). You can also set a custom directory for e.g. running in a Docker container.
+By default, the files are saved to a standard config location, depending on the platform 
+(uses [appdirs](https://github.com/ActiveState/appdirs) package for paths). 
+You can also set a custom directory for e.g. running in a Docker container.
+
 
 
 Value validation
 ================
 
-When a new value is set, it automatically gets validated and raises a `ValueError` if it doesn't pass. This validation includes more than just datatypes, for example numbers can have min/max limits or a path setting can be set to require an existing path.
+When a new value is set, it automatically gets validated and raises a `ValueError` if it doesn't pass.
+This validation includes more than just datatypes, for example numbers can have min/max limits, 
+or a path setting can be set to require an existing path.
+
 
 
 Listen for changes
 ==================
 
-If you have some update function that you want to be called when a setting is changed, you can add that function as a listener:
+If you have some update function that you want to be called when a setting is changed, 
+you can add that function as a listener:
 
-    setting.add_listener(your_function)
+    some_setting.add_listener(your_function)
 
 Now the function will be called every time when a new value is set.
 
@@ -90,7 +105,8 @@ Now the function will be called every time when a new value is set.
 Sections
 ========
 
-Optionally, if you have a lot of settings, you can organize them into sections (which also works well with UIs)
+Optionally, if you have a lot of settings, you can organize them into sections 
+(which also works well with UIs)
 
     download_options = settings.Section("Downloader settings")
     speed = settings.Number("Speed limit", 5, section=download_options)
@@ -102,7 +118,7 @@ Optionally, if you have a lot of settings, you can organize them into sections (
 Did I mention free GUIs?
 ========================
 
-That's right, this library also includes a separate `settings_gui` package, that has 
+That's right, this library also includes a separate `settings_gui` package that has 
 pre-made settings menus for both tkinter and ttk, with GTK and others to come.
 They have full integration with the aforementioned systems, like validation and sections.
 
@@ -118,9 +134,12 @@ Here's an example of some dummy settings with both libraries:
   <figcaption>Bare tkinter works too</figcaption>
 </figure>
 
-And you can get this automatically for all your defined settings by just calling one function! (`SettingsFrame` or `SettingsWindow`, depending on preference)
+And you can get this automatically for all your defined settings by just calling one function! 
+(`SettingsFrame` or `SettingsWindow`, depending on preference)
 
-Or, if you want to get more custom/contextual, you can also use the individual setting widgets and place them around your app (submodule `type_frames`).
+Or, if you want to get more custom/contextual, you can also use the individual 
+setting widgets and place them around your app (submodule `type_frames`).
+
 
 
 Setting types
@@ -134,4 +153,3 @@ List of currently available setting types:
 - Text (str)
 - Path (str)
 - Number (int)
-
