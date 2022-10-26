@@ -1,4 +1,4 @@
-# object-settings 2.0
+# object-settings
 
 Simple-to-use object-oriented Python config library, where your settings are objects.
 
@@ -97,6 +97,30 @@ Optionally, if you have a lot of settings, you can organize them into sections (
     dir = settings.Path("Target directory", '/home/yomama/Downloads', section=download_options)
     server = settings.Choice("Mirror", ["Europe", "Asia", "America", "Africa"], "Asia", section=download_options)
 
+
+
+Did I mention free GUIs?
+========================
+
+That's right, this library also includes a separate `settings_gui` package, that has 
+pre-made settings menus for both tkinter and ttk, with GTK and others to come.
+They have full integration with the aforementioned systems, like validation and sections.
+
+Here's an example of some dummy settings with both libraries: 
+(notice the warning for the misspelt download path)
+
+<figure>
+  <img src="readme-images/ttk.png">
+  <figcaption>Nice-looking ttk (theme: Sun Valley dark)</figcaption>
+</figure>
+<figure>
+  <img src="readme-images/tkinter.png">
+  <figcaption>Bare tkinter works too</figcaption>
+</figure>
+
+And you can get this automatically for all your defined settings by just calling one function! (`SettingsFrame` or `SettingsWindow`, depending on preference)
+
+Or, if you want to get more custom/contextual, you can also use the individual setting widgets and place them around your app (submodule `type_frames`).
 
 
 Setting types

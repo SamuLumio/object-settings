@@ -1,7 +1,7 @@
 [project]
 
 name = "object-settings"
-version = "2.2"
+version = "3.0.dev"
 description = "Simple object-oriented config library, where your settings are objects"
 readme = "README.md"
 
@@ -17,3 +17,17 @@ classifiers = [
 
 license = {text = "MIT License"}
 urls = {"Homepage"="https://github.com/MrHole/object-settings"}
+
+
+
+[tool.setuptools]
+
+packages = [
+    "settings",
+    "settings_gui",
+    "settings_gui.tkinter",
+    "settings_gui.ttk",
+]
+
+include-package-data = true
+package-data = {'settings_gui.tkinter'=['icons/*']}
