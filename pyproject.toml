@@ -1,7 +1,7 @@
 [project]
 
 name = "object-settings"
-version = "3.0.dev"
+version = "3.0"
 description = "Simple object-oriented config library, where your settings are objects"
 readme = "README.md"
 keywords = ["settings", "setting", "config", "OOP", "GUI"]
@@ -15,11 +15,11 @@ dependencies = [
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
-    "Development status :: 5. Production/Stable",
+    "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: MIT License",
     "Typing :: Typed",
     "Intended Audience :: Developers",
-    "Topic :: Utilites",
+    "Topic :: Utilities",
     "Topic :: Software Development",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Python Modules",

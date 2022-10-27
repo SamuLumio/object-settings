@@ -129,6 +129,7 @@ Here's an example of some dummy settings with both libraries:
   <img src="readme-images/ttk.png">
   <figcaption>Nice-looking ttk (theme: Sun Valley dark)</figcaption>
 </figure>
+
 <figure>
   <img src="readme-images/tkinter.png">
   <figcaption>Bare tkinter works too</figcaption>
