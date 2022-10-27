@@ -55,11 +55,14 @@ class Setting:
 
 	def get(self):
 		"""Return stored value, or the default if invalid or missing"""
-		value = self.section.file.get(self.name, self.datatype)
-		if self.validate(value):
-			return value
-		else:
+		try:
+			value = self.section.file.get(self.name, self.datatype)
+			if not self.validate(value):
+				raise ValueError
+		except ValueError:
 			return self.default
+		else:
+			return value
 
 	def set(self, new_value):
 		"""Validate and set a new value. Invalid values will raise a ValueError."""
