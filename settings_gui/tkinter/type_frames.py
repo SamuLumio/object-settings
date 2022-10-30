@@ -41,10 +41,12 @@ class _Base(a.layer.Frame):
 	def set_error(self, error: bool):
 		if error:
 			self.error_icon.show()
-			self.widget.state(["invalid"])
+			if a.is_ttk():
+				self.widget.state(["invalid"])
 		else:
 			self.error_icon.hide()
-			self.widget.state(["!invalid"])
+			if a.is_ttk():
+				self.widget.state(["!invalid"])
 
 
 	def validate(self, *args):
