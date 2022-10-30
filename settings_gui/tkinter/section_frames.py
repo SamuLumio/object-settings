@@ -13,8 +13,7 @@ class SectionFrame(a.layer.Frame):
 		for setting in section.settings:
 			for type, type_frame in type_frames.types.items():
 				if isinstance(setting, type):
-					frame = type_frame(setting)
-					self.settings.append(frame(self, setting, autosave=autosave))
+					self.settings.append(type_frame(self, setting, autosave=autosave))
 					self.settings[-1].pack(fill='x', pady=PAD*2)
 					break
 
