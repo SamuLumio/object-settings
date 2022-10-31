@@ -21,11 +21,11 @@ class Toggle(base.Setting):
 
 	@property
 	def value(self) -> bool:
-		return super().value
+		return self.get()
 
 	@value.setter
 	def value(self, new_value: bool):
-		super().value = new_value
+		self.set(new_value)
 
 
 	def toggle(self):
@@ -56,11 +56,11 @@ class Choice(base.Setting):
 
 	@property
 	def value(self) -> str:
-		return super().value
+		return self.get()
 
 	@value.setter
 	def value(self, new_value: str):
-		super().value = new_value
+		self.set(new_value)
 
 
 
@@ -97,11 +97,11 @@ class Multichoice(base.Setting):
 
 	@property
 	def value(self) -> list[str]:
-		return super().value
+		return self.get()
 
 	@value.setter
 	def value(self, new_value: list[str]):
-		super().value = new_value
+		self.set(new_value)
 
 
 	def append(self, item: str):
@@ -131,11 +131,11 @@ class Text(base.Setting):
 
 	@property
 	def value(self) -> str:
-		return super().value
+		return self.get()
 
 	@value.setter
 	def value(self, new_value: str):
-		super().value = new_value
+		self.set(new_value)
 
 
 
@@ -166,11 +166,11 @@ class Path(base.Setting):
 
 	@property
 	def value(self) -> str:
-		return super().value
+		return self.get()
 
 	@value.setter
 	def value(self, new_value: str):
-		super().value = new_value
+		self.set(new_value)
 
 
 
@@ -196,6 +196,15 @@ class Number(base.Setting):
 
 	def set(self, new_value: int):
 		super().set(new_value)
+
+
+	@property
+	def value(self) -> int:
+		return self.get()
+
+	@value.setter
+	def value(self, new_value: int):
+		self.set(new_value)
 
 	def increment(self):
 		self.set(self.get() + 1)
