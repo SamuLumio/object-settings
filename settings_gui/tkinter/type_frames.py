@@ -94,7 +94,7 @@ class Choice(_Base):
 	def init(self):
 		self.setting: settings.Choice
 		self.variable = tk.StringVar()
-		if len(self.setting.options) <= 3:
+		if _options_size(self.setting) <= self.width_limit:
 			frame = a.layer.Frame(self)
 			for option in reversed(self.setting.options):
 				a.layer.Radiobutton(frame, text=option, value=option, variable=self.variable,
@@ -112,7 +112,7 @@ class Multichoice(_Base):
 		self.setting: settings.Multichoice
 		self.variable = self.MultichoiceVar(self.setting.options)
 		self.widget = a.layer.Frame(self)
-		direction = 'left' if len(self.setting.options) <= 3 else 'top'
+		direction = 'left' if (_options_size(self.setting) <= self.width_limit) else 'top'
 
 		for option in self.setting.options:
 			# noinspection PyTypeChecker
@@ -227,6 +227,13 @@ def _icon_path(icon: str):
 	if '.' not in icon:
 		icon += '.png'
 	return os.path.join(os.path.dirname(__file__), 'icons', icon)
+
+
+def _options_size(setting):
+	text = sum(len(o) for o in setting.options)
+	icons = len(setting.options) * 3
+	return text + icons
+
 
 
 

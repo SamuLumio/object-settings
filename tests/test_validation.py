@@ -47,7 +47,7 @@ def test_text():
 
 def test_path():
 	_base_validate(
-		setting=settings.Path("TestPath", "Testing", has_to_exist=True),
+		setting=settings.Path("TestPath", __file__, has_to_exist=True),
 		valid_values=[__file__],
 		invalid_values=[os.path.join(__file__, "dir that can't exist")]
 	)
