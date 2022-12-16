@@ -2,9 +2,9 @@ import tkinter
 import tkinter.ttk
 
 
-class TtkAbstractor:
+class TkAbstractor:
 	def __init__(self):
-		self._layer = tkinter.ttk
+		self._layer = tkinter
 
 	@property
 	def layer(self):
@@ -20,6 +20,4 @@ class TtkAbstractor:
 		return self.layer == tkinter.ttk
 
 
-a = TtkAbstractor()
-
-a.switch_to_tkinter()
+a = TkAbstractor()

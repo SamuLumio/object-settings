@@ -18,10 +18,12 @@ def test_tkinter():
 
 	import tkinter
 	window = tkinter.Tk()
-	window.title("Settings demo")
+	window.title("Check that tkinter GUI looks right")
 
 	import settings_gui.tkinter
-	settings_gui.tkinter.SettingsFrame(window).pack(padx=5, pady=5, fill='both')
+	frame = settings_gui.tkinter.SettingsFrame(window)
+	assert isinstance(frame, tkinter.Frame)
+	frame.pack(padx=5, pady=5, fill='both')
 
 	window.mainloop()
 
@@ -29,13 +31,22 @@ def test_tkinter():
 
 def test_ttk():
 
-	import tkinter
+	import tkinter.ttk
 	window = tkinter.Tk()
-	window.title("Settings demo")
+	window.title("Check that ttk GUI looks right")
 
-	import settings_gui.ttk
 	import sv_ttk
 	sv_ttk.set_theme('dark')
-	settings_gui.ttk.SettingsFrame(window).pack(padx=5, pady=5, fill='both')
+
+	import settings_gui.ttk
+	settings_gui.ttk.set_padding(4)
+	tkinter.ttk.Frame(window).pack(pady=2)
+	frame = settings_gui.ttk.SettingsFrame(window)
+	assert isinstance(frame, tkinter.ttk.Frame)
+	for section in frame.sections:
+		section.configure(style='Card.TFrame')
+	frame.pack(padx=5, pady=5, fill='both')
 
 	window.mainloop()
+
+	settings_gui.ttk.disable_ttk()

@@ -1,8 +1,7 @@
 import os, typing, colorsys, settings, subprocess, tkinter.filedialog
 import tkinter as tk
 
-from . import PAD
-from ._abstractor import a
+from . import pad, a
 
 
 
@@ -19,14 +18,14 @@ class _Base(a.layer.Frame):
 		self.error_photoimage = tk.PhotoImage(file=_icon_path('error'))
 		self.error_icon = _AppearingWidget(a.layer.Label(self, image=self.error_photoimage))
 
-		a.layer.Label(self, text=setting.name).pack(side='left', padx=PAD)
-		a.layer.Frame(self).pack(side='left', padx=PAD*3)
+		a.layer.Label(self, text=setting.name).pack(side='left', padx=pad())
+		a.layer.Frame(self).pack(side='left', padx=pad()*3)
 
 		self.init()
 
 		if isinstance(self.widget, a.layer.Widget):
 			self.widget: a.layer.Widget
-			self.widget.pack(side='right', padx=PAD)
+			self.widget.pack(side='right', padx=pad())
 
 		if isinstance(self.widget, (a.layer.Entry, a.layer.Spinbox, a.layer.OptionMenu)):
 			self.variable.trace_add('write', self.update_width)
@@ -98,7 +97,7 @@ class Choice(_Base):
 			frame = a.layer.Frame(self)
 			for option in reversed(self.setting.options):
 				a.layer.Radiobutton(frame, text=option, value=option, variable=self.variable,
-				                    command=self.save_from_widget).pack(side='right', padx=PAD)
+				                    command=self.save_from_widget).pack(side='right', padx=pad())
 			self.widget = frame
 		else:
 			self.widget = a.layer.OptionMenu(self, self.variable, self.setting.value, *self.setting.options,
@@ -117,7 +116,7 @@ class Multichoice(_Base):
 		for option in self.setting.options:
 			# noinspection PyTypeChecker
 			a.layer.Checkbutton(self.widget, text=option, variable=self.variable[option],
-			                    command=self.save_from_widget).pack(side=direction, anchor='w', padx=PAD / 2)
+			                    command=self.save_from_widget).pack(side=direction, anchor='w', padx=pad() / 2)
 
 
 	class MultichoiceVar:
@@ -187,7 +186,7 @@ class Path(Text):
 	"""Like Text, but with a button to open a file chooser"""
 	def init(self):
 		super().init()
-		self.icon_button('folder', self.browse).pack(side='right', padx=PAD)
+		self.icon_button('folder', self.browse).pack(side='right', padx=pad())
 
 	def browse(self):
 		try:
@@ -251,7 +250,7 @@ class _AppearingWidget:
 
 	def show(self):
 		if not self.visible:
-			self.widget.pack(side='right', padx=PAD*2)
+			self.widget.pack(side='right', padx=pad()*2)
 			self.visible = True
 
 	def hide(self):
