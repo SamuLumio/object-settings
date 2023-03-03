@@ -1,12 +1,5 @@
 from dataclasses import dataclass as _dataclass
-
-
-def _config(cls):
-	# Editable by calling
-	cls.__call__ = cls.__init__
-	# Return instance
-	return cls()
-
+from settings.config import _config
 
 
 @_config

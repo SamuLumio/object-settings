@@ -7,9 +7,8 @@ seamlessly written and read in the background, so you don't have to worry about 
 PS: includes free GUIs with settings_gui
 """
 
-from . import base, dir, parser, types
+from . import base, config, dir, parser, types
 
-from .dir import setup
+from .config import setup
 from .base import Section, all_sections
 from .types import *
-
