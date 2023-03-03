@@ -15,6 +15,7 @@ class Section:
 		all_sections.append(self)
 
 	def get_path(self):
+		"""Return the file the values are stored in"""
 		return os.path.join(dir.get(), self.name + '.cfg')
 
 
@@ -26,7 +27,7 @@ default_section = Section('Settings')
 
 
 class Setting:
-	"""Base setting class"""
+	"""Base setting class - can be effectively subclassed to create custom setting types"""
 	def __init__(self, datatype, name: str, default, section: Section = default_section):
 		self.datatype = datatype
 		self.name = name
@@ -37,21 +38,24 @@ class Setting:
 		if self not in self.section.settings:
 			self.section.settings.append(self)
 
-		# Make sure that option exists in file
+		# Make sure that option always exists in file, so it can be easily edited from there
 		if self.name not in self.section.file.keys():
 			self.set(self.default)
 
 
 	def add_listener(self, function: typing.Callable[[], None]):
+		"""Add a function to be called when the setting is changed"""
 		if function not in self.listeners:
 			self.listeners.append(function)
 
 
 	def validate(self, value) -> bool:
+		"""Check if value is valid and can be set for this setting"""
 		return type(value) == self.datatype
 		# Expanded within each setting type
 
 	def check_validate(self, value):
+		"""Call validate() and raise ValueError if value is not valid"""
 		if not self.validate(value):
 			raise ValueError
 
@@ -83,10 +87,12 @@ class Setting:
 
 	@property
 	def value(self):
+		"""The stored value - can also be set with this variable"""
 		return self.get()
 
 	@value.setter
 	def value(self, new_value):
+		"""The stored value - can also be set with this variable"""
 		self.set(new_value)
 
 
