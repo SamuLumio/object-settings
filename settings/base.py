@@ -37,7 +37,7 @@ class Setting:
 		if self not in self.section.settings:
 			self.section.settings.append(self)
 
-		# Make sure that option exists in fle
+		# Make sure that option exists in file
 		if self.name not in self.section.file.keys():
 			self.set(self.default)
 
@@ -51,18 +51,19 @@ class Setting:
 		return type(value) == self.datatype
 		# Expanded within each setting type
 
+	def check_validate(self, value):
+		if not self.validate(value):
+			raise ValueError
 
 
 	def get(self):
 		"""Return stored value, or the default if invalid or missing"""
 		try:
 			value = self.section.file.get(self.name, self.datatype)
-			if not self.validate(value):
-				raise ValueError
-		except ValueError:
-			return self.default
-		else:
+			self.check_validate(value)
 			return value
+		except:
+			return self.default
 
 	def set(self, new_value):
 		"""Validate and set a new value. Invalid values will raise a ValueError."""
