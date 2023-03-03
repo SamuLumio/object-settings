@@ -13,24 +13,20 @@ def _config(cls):
 @_config
 @_dataclass
 class values:
-	app_name: str
+	app_name: str = None
 	custom_dir: Optional[str] = None
 
-	@property
-	def app_name(self):
-		if hasattr(self, '_app_name'):
-			return self._app_name
-		else:
+	def __getattribute__(self, item):
+		value = super().__getattribute__(item)
+		if item == 'app_name' and value is None:
 			raise NotSetupError
-
-	@app_name.setter
-	def app_name(self, value: str):
-		setattr(self, '_app_name', value)
+		else:
+			return value
 
 
+# Aliases because the class serves as both of these things
 setup = values
-
-
+config = values
 
 
 
