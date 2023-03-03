@@ -1,6 +1,7 @@
 import os, typing, colorsys, settings, subprocess, tkinter.filedialog
 import tkinter as tk
 
+from ..config import strings
 from . import pad, a
 
 
@@ -199,9 +200,9 @@ class Path(Text):
 				dir = func(initialdir=os.path.expanduser('~'))
 				if dir:
 					self.variable.set(dir)
-			popup = tk.Menu(self)
-			popup.add_command(label="File", command=lambda: open(tk.filedialog.askopenfilename))
-			popup.add_command(label="Directory", command=lambda: open(tk.filedialog.askdirectory))
+			popup = tk.Menu(self, tearoff=False)
+			popup.add_command(label=strings.file, command=lambda: open(tk.filedialog.askopenfilename))
+			popup.add_command(label=strings.dir, command=lambda: open(tk.filedialog.askdirectory))
 			popup.tk_popup(*self.winfo_pointerxy())
 
 
@@ -209,7 +210,7 @@ class Path(Text):
 
 
 class Number(_Base):
-	"""Spinbox that allows to increment/decrement (and manually type in)"""
+	"""Spinbox that allows to increment/decrement (or manually type in)"""
 	def init(self):
 		self.setting: settings.Number
 		self.variable = tk.IntVar()
