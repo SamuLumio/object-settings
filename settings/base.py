@@ -1,6 +1,6 @@
 import os, threading, typing
 
-from . import dir, parser
+from . import parser, get_dir
 
 
 
@@ -16,7 +16,7 @@ class Section:
 
 	def get_path(self):
 		"""Return the file the values are stored in"""
-		return os.path.join(dir.get(), self.name + '.cfg')
+		return os.path.join(get_dir(), self.name + '.cfg')
 
 
 
@@ -109,4 +109,3 @@ class Setting:
 			return (other.name == self.name) and (other.section == self.section)
 		elif isinstance(other, self.datatype):
 			return self.value == other
-

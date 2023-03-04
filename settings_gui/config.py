@@ -1,8 +1,8 @@
 from dataclasses import dataclass as _dataclass
-from settings.config import _config
+from settings.config import _instance
 
 
-@_config
+@_instance
 @_dataclass
 class strings:
 	file: str = "File"
