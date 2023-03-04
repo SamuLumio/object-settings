@@ -1,5 +1,4 @@
 import appdirs
-from typing import Optional
 from dataclasses import dataclass as _dataclass
 
 
@@ -14,8 +13,20 @@ def _instance(cls):
 @_instance
 @_dataclass
 class values:
+	"""Call this to configure the library to better suit your app.
+	Only app_name is required, all other values are optional."""
+
 	app_name: str = None
-	custom_dir: Optional[str] = None
+	"""The name/id of your app - used to generate paths for config files and keys for environment variables 
+	(this is the only required option)"""
+
+	custom_dir: str | None = None
+	"""Custom directory to store config files in instead of the one generated with app_name"""
+
+	use_env: bool = True
+	"""Allow loading setting values from environment variables 
+	(using standard form of capitalized-underscored APPNAME_SETTING_NAME)"""
+
 
 	def __getattribute__(self, item):
 		value = super().__getattribute__(item)

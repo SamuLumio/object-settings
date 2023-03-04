@@ -1,4 +1,4 @@
-import os
+import os, appdirs
 
 import settings
 
@@ -12,6 +12,10 @@ settings.Multichoice("Files to download", ["Video", "Audio", "Subtitles"], ["Vid
 ui_options = settings.Section("UI settings")
 settings.Toggle("Show file descriptions", True, ui_options)
 settings.Choice("Speed measurement unit", ['Mbit', 'MB'], 'Mbit', ui_options)
+
+advanced = settings.Section("Advanced")
+settings.Path("Data directory", "set from env so you shouldn't see this", section=advanced)
+os.environ['TESTAPP_DATA_DIRECTORY'] = appdirs.user_data_dir()
 
 
 def test_tkinter():

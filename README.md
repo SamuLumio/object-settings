@@ -79,6 +79,8 @@ By default, the files are saved to a standard config location, depending on the 
 (uses [appdirs](https://github.com/ActiveState/appdirs) package for paths). 
 You can also set a custom directory for e.g. running in a Docker container.
 
+Setting values are also automatically read from enviroment variables if they are provided (in the standard envvar form of APPNAME_SETTING_NAME).
+
 
 
 Value validation
@@ -154,3 +156,5 @@ List of currently available setting types:
 - Text (str)
 - Path (str)
 - Number (int)
+
+You can also inherit from the base Setting class to easily create custom ones.

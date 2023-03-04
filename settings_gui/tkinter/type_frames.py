@@ -24,6 +24,10 @@ class _Base(a.layer.Frame):
 
 		self.init()
 
+		# Settings set from envvars can't be changed
+		if self.setting.set_from_env:
+			self.widget = a.layer.Label(self, text=strings.set_from_env, foreground='gray')
+
 		if isinstance(self.widget, a.layer.Widget):
 			self.widget: a.layer.Widget
 			self.widget.pack(side='right', padx=pad())
@@ -66,11 +70,12 @@ class _Base(a.layer.Frame):
 
 
 	def save(self):
-		try:
-			self.setting.set(self.variable.get())
-			self.set_error(False)
-		except (ValueError, tk.TclError):
-			self.set_error(True)
+		if not self.setting.set_from_env:
+			try:
+				self.setting.set(self.variable.get())
+				self.set_error(False)
+			except (ValueError, tk.TclError):
+				self.set_error(True)
 
 
 	def save_from_widget(self, *args):
@@ -187,7 +192,8 @@ class Path(Text):
 	"""Like Text, but with a button to open a file chooser"""
 	def init(self):
 		super().init()
-		self.icon_button('folder', self.browse).pack(side='right', padx=pad())
+		if not self.setting.set_from_env:
+			self.icon_button('folder', self.browse).pack(side='right', padx=pad())
 
 	def browse(self):
 		try:

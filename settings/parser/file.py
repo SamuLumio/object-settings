@@ -1,6 +1,6 @@
-import configparser
-import os.path
-import typing
+import configparser, os, typing
+
+from . import _datatype_loader
 
 
 class ConfigFile:
@@ -53,15 +53,8 @@ class ConfigFile:
 	def get(self, option: str, type: typing.Type[str | int | float | bool | list]):
 		"""Reload and get value."""
 		self.reload()
-		special_functions = {
-			str: self._parser.get,
-			int: self._parser.getint,
-			float: self._parser.getfloat,
-			bool: self._parser.getboolean,
-			list: lambda *args: self._parser.get(*args).strip("['").strip("']").split("', '")
-		}
-		function = special_functions[type]
-		return function(self.title, option)
+		string = self._parser.get(self.title, option)
+		return _datatype_loader.functions[type](string)
 
 
 	def set(self, option: str, value):

@@ -1,6 +1,6 @@
 import os, threading, typing
 
-from . import parser, get_dir
+from . import parser, config, get_dir
 
 
 
@@ -63,7 +63,10 @@ class Setting:
 	def get(self):
 		"""Return stored value, or the default if invalid or missing"""
 		try:
-			value = self.section.file.get(self.name, self.datatype)
+			if self.set_from_env:
+				value = parser.env.get(self.name, self.datatype)
+			else:
+				value = self.section.file.get(self.name, self.datatype)
 			self.check_validate(value)
 			return value
 		except:
@@ -71,14 +74,18 @@ class Setting:
 
 	def set(self, new_value):
 		"""Validate and set a new value. Invalid values will raise a ValueError."""
-		valid = self.validate(new_value)
-		if not valid:
+		if self.set_from_env:
+			raise PermissionError(f"Setting {self.name} is set from enviroment variable")
+		if not self.validate(new_value):
 			raise ValueError(f"New setting value {new_value} is invalid")
 		self.section.file.set(self.name, new_value)
 
 		for listener in self.listeners:
-			threading.Thread(target=listener, daemon=True).start()
+			threading.Thread(target=listener).start()
 
+	@property
+	def set_from_env(self):
+		return config.use_env and parser.env.exists(self.name)
 
 	def reset(self):
 		"""Sets the setting back to its default value"""
@@ -109,3 +116,4 @@ class Setting:
 			return (other.name == self.name) and (other.section == self.section)
 		elif isinstance(other, self.datatype):
 			return self.value == other
+
