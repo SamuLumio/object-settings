@@ -43,7 +43,7 @@ def test_ttk():
 	sv_ttk.set_theme('dark')
 
 	import settings_gui.ttk
-	settings_gui.ttk.set_padding(4)
+	settings_gui.config.config(padding=4)
 	tkinter.ttk.Frame(window).pack(pady=2)
 	frame = settings_gui.ttk.SettingsFrame(window)
 	assert isinstance(frame, tkinter.ttk.Frame)

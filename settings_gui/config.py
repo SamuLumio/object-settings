@@ -2,6 +2,13 @@ from dataclasses import dataclass as _dataclass
 from settings.config import _instance
 
 
+
+@_instance
+@_dataclass
+class config:
+	padding: int = 2
+
+
 @_instance
 @_dataclass
 class strings:

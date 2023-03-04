@@ -1,6 +1,7 @@
 import settings, tkinter
 
-from . import section_frames, pad, a
+from ..config import config
+from . import section_frames, a
 
 
 class SettingsFrame(a.layer.Frame):
@@ -10,17 +11,17 @@ class SettingsFrame(a.layer.Frame):
 		for section in settings.all_sections:
 
 			if section != settings.base.default_section:
-				a.layer.Frame(self).pack(pady=pad())  # padding
-				a.layer.Label(self, text=section.name, font='big').pack(padx=pad())
+				a.layer.Frame(self).pack(pady=config.padding)  # padding
+				a.layer.Label(self, text=section.name, font='big').pack(padx=config.padding)
 
 				self.sections.append(section_frames.SectionFrame(self, section, autosave=autosave))
-				self.sections[-1].pack(fill='x', expand=True, padx=2*pad(), pady=3*pad())
+				self.sections[-1].pack(fill='x', expand=True, padx=2*config.padding, pady=3*config.padding)
 
 		if isinstance(save_button, str):
 			button = a.layer.Button(self, command=self.save_settings, text=save_button)
 			if a.is_ttk():
 				button.configure(style='Accent.TButton')
-			button.pack(pady=pad()*3)
+			button.pack(pady=config.padding*3)
 
 	def save_settings(self):
 		for section_frame in self.sections:
@@ -33,7 +34,7 @@ class SettingsFrame(a.layer.Frame):
 class SettingsWindow(tkinter.Toplevel):
 	def __init__(self, master, title="Settings", autosave=True, save_button: str = None):
 		super().__init__(master)
-		SettingsFrame(self, autosave, save_button).pack(padx=pad()*2, pady=pad()*2, fill='both')
+		SettingsFrame(self, autosave, save_button).pack(padx=config.padding*2, pady=config.padding*2, fill='both')
 
 		self.title(title)
 	#	self.minsize(self.winfo_width(), self.winfo_height())

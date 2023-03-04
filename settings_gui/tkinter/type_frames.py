@@ -1,8 +1,8 @@
 import os, typing, colorsys, settings, subprocess, tkinter.filedialog
 import tkinter as tk
 
-from ..config import strings
-from . import pad, a
+from ..config import config, strings
+from . import a
 
 
 
@@ -19,8 +19,8 @@ class _Base(a.layer.Frame):
 		self.error_photoimage = tk.PhotoImage(file=_icon_path('error'))
 		self.error_icon = _AppearingWidget(a.layer.Label(self, image=self.error_photoimage))
 
-		a.layer.Label(self, text=setting.name).pack(side='left', padx=pad())
-		a.layer.Frame(self).pack(side='left', padx=pad()*3)
+		a.layer.Label(self, text=setting.name).pack(side='left', padx=config.padding)
+		a.layer.Frame(self).pack(side='left', padx=config.padding*3)
 
 		self.init()
 
@@ -30,7 +30,7 @@ class _Base(a.layer.Frame):
 
 		if isinstance(self.widget, a.layer.Widget):
 			self.widget: a.layer.Widget
-			self.widget.pack(side='right', padx=pad())
+			self.widget.pack(side='right', padx=config.padding)
 
 		if isinstance(self.widget, (a.layer.Entry, a.layer.Spinbox, a.layer.OptionMenu)):
 			self.variable.trace_add('write', self.update_width)
@@ -103,7 +103,7 @@ class Choice(_Base):
 			frame = a.layer.Frame(self)
 			for option in reversed(self.setting.options):
 				a.layer.Radiobutton(frame, text=option, value=option, variable=self.variable,
-				                    command=self.save_from_widget).pack(side='right', padx=pad())
+				                    command=self.save_from_widget).pack(side='right', padx=config.padding)
 			self.widget = frame
 		else:
 			self.widget = a.layer.OptionMenu(self, self.variable, self.setting.value, *self.setting.options,
@@ -122,7 +122,8 @@ class Multichoice(_Base):
 		for option in self.setting.options:
 			# noinspection PyTypeChecker
 			a.layer.Checkbutton(self.widget, text=option, variable=self.variable[option],
-			                    command=self.save_from_widget).pack(side=direction, anchor='w', padx=pad() / 2)
+			                    command=self.save_from_widget).pack(side=direction, anchor='w',
+			                                                        padx=config.padding / 2)
 
 
 	class MultichoiceVar:
@@ -193,7 +194,7 @@ class Path(Text):
 	def init(self):
 		super().init()
 		if not self.setting.set_from_env:
-			self.icon_button('folder', self.browse).pack(side='right', padx=pad())
+			self.icon_button('folder', self.browse).pack(side='right', padx=config.padding)
 
 	def browse(self):
 		try:
@@ -257,7 +258,7 @@ class _AppearingWidget:
 
 	def show(self):
 		if not self.visible:
-			self.widget.pack(side='right', padx=pad()*2)
+			self.widget.pack(side='right', padx=config.padding*2)
 			self.visible = True
 
 	def hide(self):
