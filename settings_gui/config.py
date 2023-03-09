@@ -1,5 +1,5 @@
 from dataclasses import dataclass as _dataclass
-from settings.config import _instance
+from settings.backend.config import _instance
 
 
 

@@ -1,6 +1,6 @@
-import os, threading, typing
+import threading, typing
 
-from . import parser, config, get_dir
+from . import backend
 
 
 
@@ -11,12 +11,23 @@ class Section:
 	def __init__(self, name: str):
 		self.name = name
 		self.settings = []
-		self.file = parser.ConfigFile(self.get_path, title=self.name)
+		self._storage = None
+		# self._environment = None
+		self.environment = backend.Environment()
 		all_sections.append(self)
 
-	def get_path(self):
-		"""Return the file the values are stored in"""
-		return os.path.join(get_dir(), self.name + '.cfg')
+	@property
+	def storage(self):
+		if self._storage is None:
+			self._storage = backend.Storage(self.name)
+		return self._storage
+
+	# @property
+	# def environment(self):
+	# 	if self._environment is None:
+	# 		self._environment = backend.Environment()
+	# 	return self._environment
+
 
 
 
@@ -39,7 +50,7 @@ class Setting:
 			self.section.settings.append(self)
 
 		# Make sure that option always exists in file, so it can be easily edited from there
-		if self.name not in self.section.file.keys():
+		if not self.section.storage.exists(self.name):
 			self.set(self.default)
 
 
@@ -63,10 +74,10 @@ class Setting:
 	def get(self):
 		"""Return stored value, or the default if invalid or missing"""
 		try:
-			if self.set_from_env:
-				value = parser.env.get(self.name, self.datatype)
+			if self.set_externally:
+				value = self.section.environment.get(self.name, self.datatype)
 			else:
-				value = self.section.file.get(self.name, self.datatype)
+				value = self.section.storage.get(self.name, self.datatype)
 			self.check_validate(value)
 			return value
 		except:
@@ -74,18 +85,15 @@ class Setting:
 
 	def set(self, new_value):
 		"""Validate and set a new value. Invalid values will raise a ValueError."""
-		if self.set_from_env:
-			raise PermissionError(f"Setting {self.name} is set from enviroment variable")
 		if not self.validate(new_value):
 			raise ValueError(f"New setting value {new_value} is invalid")
-		self.section.file.set(self.name, new_value)
-
+		self.section.storage.set(self.name, new_value)
 		for listener in self.listeners:
 			threading.Thread(target=listener).start()
 
 	@property
-	def set_from_env(self):
-		return config.use_env and parser.env.exists(self.name)
+	def set_externally(self):
+		return backend.config.use_env and self.section.environment.exists(self.name)
 
 	def reset(self):
 		"""Sets the setting back to its default value"""
@@ -116,4 +124,3 @@ class Setting:
 			return (other.name == self.name) and (other.section == self.section)
 		elif isinstance(other, self.datatype):
 			return self.value == other
-

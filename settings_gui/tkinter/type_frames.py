@@ -25,7 +25,7 @@ class _Base(a.layer.Frame):
 		self.init()
 
 		# Settings set from envvars can't be changed
-		if self.setting.set_from_env:
+		if self.setting.set_externally:
 			self.widget = a.layer.Label(self, text=strings.set_from_env, foreground='gray')
 
 		if isinstance(self.widget, a.layer.Widget):
@@ -70,7 +70,7 @@ class _Base(a.layer.Frame):
 
 
 	def save(self):
-		if not self.setting.set_from_env:
+		if not self.setting.set_externally:
 			try:
 				self.setting.set(self.variable.get())
 				self.set_error(False)
@@ -193,7 +193,7 @@ class Path(Text):
 	"""Like Text, but with a button to open a file chooser"""
 	def init(self):
 		super().init()
-		if not self.setting.set_from_env:
+		if not self.setting.set_externally:
 			self.icon_button('folder', self.browse).pack(side='right', padx=config.padding)
 
 	def browse(self):

@@ -73,13 +73,15 @@ Automatic storing
 
 When a setting's value is read/set, object-settings automatically creates and updates 
 a config file on the disk in the background. 
+It can read many file types, like `.cfg`, `.json` and `.yaml`.
 Any file deletions or unparsable external modifications are also handled.
 
 By default, the files are saved to a standard config location, depending on the platform 
 (uses [appdirs](https://github.com/ActiveState/appdirs) package for paths). 
 You can also set a custom directory for e.g. running in a Docker container.
 
-Setting values are also automatically read from enviroment variables if they are provided (in the standard envvar form of APPNAME_SETTING_NAME).
+Setting values are also automatically read from the environment, like from env vars or command line options.
+The under-the-hood parser system is also very extensible, so you can create and add custom ones for e.g. a custom database.
 
 
 

@@ -1,10 +1,20 @@
-import appdirs
-from dataclasses import dataclass as _dataclass
+from dataclasses import dataclass as _dataclass, field as _field, fields as _fields
+
+from . import parsers
 
 
 def _instance(cls):
 	# Editable by calling
-	cls.__call__ = cls.__init__
+	def update(self, *args, **kwargs):
+		field_list = _fields(self)
+		fields = {field.name: field for field in field_list}
+		for index, arg in enumerate(args):
+			field = field_list[index]
+			kwargs[field.name] = arg
+		for field, value in kwargs.items():
+			if field != fields[field].default:
+				setattr(self, field, value)
+	cls.__call__ = update
 	# Return instance
 	return cls()
 
@@ -24,8 +34,14 @@ class values:
 	"""Custom directory to store config files in instead of the one generated with app_name"""
 
 	use_env: bool = True
-	"""Allow loading setting values from environment variables 
-	(using standard form of capitalized-underscored APPNAME_SETTING_NAME)"""
+	"""Allow loading setting values from the enviroment
+	(like env vars and command line options)"""
+
+	storage_parsers: list[type[parsers.StorageParser]] = _field(
+		default_factory=parsers.storage_parsers.copy)
+
+	environment_parsers: list[type[parsers.EnvironmentParser]] = _field(
+		default_factory=parsers.environment_parsers.copy)
 
 
 	def __getattribute__(self, item):
@@ -39,17 +55,6 @@ class values:
 # Aliases because the class serves as both of these things
 setup = values
 config = values
-
-
-
-
-def get_dir():
-	"""Return where the config values are being stored"""
-	if isinstance(config.custom_dir, str):
-		return config.custom_dir
-	else:
-		# noinspection PyTypeChecker
-		return appdirs.user_config_dir(config.app_name, False)
 
 
 

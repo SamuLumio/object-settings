@@ -1,11 +1,12 @@
-import configparser
-import os, shutil
+import configparser, os, shutil
 
 import settings
 
 
+settings.setup(storage_parsers=[settings.backend.parsers.files.CfgParser])
+
 setting = settings.Number("Dummy", 5)
-path = setting.section.get_path()
+path = setting.section.storage.parser.path
 
 
 def _check():
