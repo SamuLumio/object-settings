@@ -93,7 +93,7 @@ class Setting:
 
 	@property
 	def set_externally(self):
-		return backend.config.use_env and self.section.environment.exists(self.name)
+		return backend.config.use_environment and self.section.environment.exists(self.name)
 
 	def reset(self):
 		"""Sets the setting back to its default value"""

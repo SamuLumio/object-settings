@@ -33,7 +33,7 @@ class values:
 	custom_dir: str | None = None
 	"""Custom directory to store config files in instead of the one generated with app_name"""
 
-	use_env: bool = True
+	use_environment: bool = True
 	"""Allow loading setting values from the enviroment
 	(like env vars and command line options)"""
 
