@@ -12,9 +12,9 @@ This makes it quick to define and use settings (see examples below).
 Installation & usage
 ====================
 
-This module is on PyPi, so you can just do `pip install object-settings`
+This package is on PyPi, so you can just do `pip install object-settings`
 
-After which it will be available with just the package name `settings`
+After which it will be available with just the module name `settings`
 
     import settings
     settings.setup("Your app name")
