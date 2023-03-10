@@ -1,7 +1,7 @@
 [project]
 
 name = "object-settings"
-version = "4.0"
+version = "4.0.1"
 description = "Simple object-oriented config library, where your settings are objects"
 readme = "README.md"
 keywords = ["settings", "setting", "config", "OOP", "GUI"]
@@ -32,6 +32,9 @@ classifiers = [
 
 packages = [
     "settings",
+    "settings.backend",
+    "settings.backend.parsers",
+
     "settings_gui",
     "settings_gui.tkinter",
     "settings_gui.ttk",
