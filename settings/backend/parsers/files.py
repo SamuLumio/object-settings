@@ -10,7 +10,6 @@ class _FileParser(_template.StorageParser):
 	def __init__(self, header="Settings"):
 		super().__init__(header)
 		self.values: dict = {}
-		print(self.path)
 
 	@property
 	def path(self):
