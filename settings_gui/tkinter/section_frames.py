@@ -6,7 +6,7 @@ from . import type_frames, a
 
 
 
-class SectionFrame(a.layer.Frame):
+class SectionFrame(a.layer.Frame): # type: ignore
 	def __init__(self, master, section: settings.Section, autosave=True):
 		super().__init__(master)
 		self.settings = []

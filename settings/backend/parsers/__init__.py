@@ -1,7 +1,7 @@
-from . import _template, cli, env, files
+from . import _template
+from ._template import StorageParserTemplate, EnvironmentParserTemplate
 
-from ._template import StorageParser, EnvironmentParser
-
+from . import cli, env, files
 
 
 storage_parsers = [files.CfgParser, files.YamlParser, files.JsonParser]

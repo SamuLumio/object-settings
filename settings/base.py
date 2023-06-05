@@ -1,18 +1,17 @@
 import threading, typing
 
-from . import backend
+from . import backend, config
 
 
 
 
 class Section:
-	"""A group of settings that is also represented by one file.
-	Usage of these is optional, settings defined without sections will use the default one."""
+	"""A group of settings that is also represented by one config file.
+	Usage of these is optional – settings defined without sections will use the default one."""
 	def __init__(self, name: str):
 		self.name = name
 		self.settings = []
 		self._storage = None
-		# self._environment = None
 		self.environment = backend.Environment()
 		all_sections.append(self)
 
@@ -21,12 +20,6 @@ class Section:
 		if self._storage is None:
 			self._storage = backend.Storage(self.name)
 		return self._storage
-
-	# @property
-	# def environment(self):
-	# 	if self._environment is None:
-	# 		self._environment = backend.Environment()
-	# 	return self._environment
 
 
 
@@ -37,8 +30,8 @@ default_section = Section('Settings')
 
 
 
-class Setting:
-	"""Base setting class - can be effectively subclassed to create custom setting types"""
+class BaseSetting:
+	"""Base setting class - can be safely subclassed to create custom setting types"""
 	def __init__(self, datatype, name: str, default, section: Section = default_section):
 		self.datatype = datatype
 		self.name = name
@@ -71,8 +64,8 @@ class Setting:
 			raise ValueError
 
 
-	def get(self):
-		"""Return stored value, or the default if invalid or missing"""
+	def get(self) -> typing.Any:
+		"""Return the set value, or the default if invalid or missing"""
 		try:
 			if self.set_externally:
 				value = self.section.environment.get(self.name, self.datatype)
@@ -93,7 +86,8 @@ class Setting:
 
 	@property
 	def set_externally(self):
-		return backend.config.use_environment and self.section.environment.exists(self.name)
+		"""See if the value is set from the environment (like env vars or cli params)"""
+		return config.use_environment and self.section.environment.exists(self.name)
 
 	def reset(self):
 		"""Sets the setting back to its default value"""
@@ -120,7 +114,10 @@ class Setting:
 
 	def __eq__(self, other):
 		"""Supports comparing with actual types (and other settings)"""
-		if isinstance(other, Setting):
+		if isinstance(other, BaseSetting):
 			return (other.name == self.name) and (other.section == self.section)
 		elif isinstance(other, self.datatype):
 			return self.value == other
+
+
+Setting = BaseSetting  # for backwards compatibility

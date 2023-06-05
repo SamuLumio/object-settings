@@ -1,4 +1,7 @@
-class EnvironmentParser:
+import typing
+
+
+class EnvironmentParserTemplate:
 	"""Controller/parser for a read-only config source"""
 
 	@classmethod
@@ -7,23 +10,24 @@ class EnvironmentParser:
 		return str(setting_name)
 
 	@classmethod
-	def get(cls, option: str) -> str:
+	def get(cls, option: str) -> typing.Any:
 		"""Reload and get value"""
 
 	@classmethod
 	def exists(cls, option: str) -> bool:
 		"""Check if option is defined"""
+		return False
 
 
 
 
-class StorageParser:
+class StorageParserTemplate:
 	"""Controller/parser for a config file"""
 
 	def __init__(self, header="Settings"):
 		self.header = header
 
-	def get(self, option: str) -> str:
+	def get(self, option: str) -> typing.Any:
 		"""Reload and get value"""
 
 	def set(self, option: str, value):
@@ -31,8 +35,9 @@ class StorageParser:
 
 	def exists(self, option: str) -> bool:
 		"""Check if option is defined"""
+		return False
 
 	@property
 	def active(self) -> bool:
-		"""Check if target path exists"""
+		"""Check if a stored configuration exists"""
 		return False

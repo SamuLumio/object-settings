@@ -6,13 +6,13 @@ from . import a
 
 
 
-
-class _Base(a.layer.Frame):
-	def __init__(self, master, setting: settings.base.Setting, autosave: bool, width_limit=30):
+class _Base(a.layer.Frame): # type: ignore
+	def __init__(self, master, setting: settings.BaseSetting, autosave: bool, width_limit=30):
 		super().__init__(master)
+		settings.BaseSetting
 		self.setting = setting
 		self.variable = tk.Variable()
-		self.widget: a.layer.Widget | None = None
+		self.widget: a.layer.Widget | None = None # type: ignore
 		self.autosave = autosave
 		self.width_limit = width_limit
 
@@ -29,7 +29,7 @@ class _Base(a.layer.Frame):
 			self.widget = a.layer.Label(self, text=strings.set_from_env, foreground='gray')
 
 		if isinstance(self.widget, a.layer.Widget):
-			self.widget: a.layer.Widget
+			self.widget: a.layer.Widget # type: ignore
 			self.widget.pack(side='right', padx=config.padding)
 
 		if isinstance(self.widget, (a.layer.Entry, a.layer.Spinbox, a.layer.OptionMenu)):
@@ -84,6 +84,7 @@ class _Base(a.layer.Frame):
 
 
 
+
 class Toggle(_Base):
 	"""A checkbutton, or a switch if available from ttk theme"""
 	def init(self):
@@ -91,6 +92,7 @@ class Toggle(_Base):
 		self.widget = a.layer.Checkbutton(self, variable=self.variable, command=self.save_from_widget)
 		if a.is_ttk():
 			self.widget.configure(style='Switch.TCheckbutton')
+
 
 
 
@@ -108,6 +110,7 @@ class Choice(_Base):
 		else:
 			self.widget = a.layer.OptionMenu(self, self.variable, self.setting.value, *self.setting.options,
 			                                 command=self.save_from_widget)
+
 
 
 
@@ -169,7 +172,7 @@ class Text(_Base):
 	def icon_button(self, icon: str, command: typing.Callable):
 
 		if a.is_ttk():
-			hex = a.layer.Style().lookup('TButton', 'background')
+			hex = a.layer.Style().lookup('TButton', 'background') # type: ignore
 			hex = str(hex).removeprefix('#')
 			rgb = tuple(int(hex[i:i + 2], 16) for i in (0, 2, 4))
 			hls = colorsys.rgb_to_hls(*rgb)
@@ -186,6 +189,7 @@ class Text(_Base):
 		icon_image = tk.PhotoImage(file=path)
 		self.icons.append(icon_image)
 		return a.layer.Button(self, image=icon_image, command=command)
+
 
 
 
@@ -208,10 +212,9 @@ class Path(Text):
 				if dir:
 					self.variable.set(dir)
 			popup = tk.Menu(self, tearoff=False)
-			popup.add_command(label=strings.file, command=lambda: open(tk.filedialog.askopenfilename))
-			popup.add_command(label=strings.dir, command=lambda: open(tk.filedialog.askdirectory))
+			popup.add_command(label=strings.file, command=lambda: open(tkinter.filedialog.askopenfilename))
+			popup.add_command(label=strings.dir, command=lambda: open(tkinter.filedialog.askdirectory))
 			popup.tk_popup(*self.winfo_pointerxy())
-
 
 
 
@@ -224,6 +227,32 @@ class Number(_Base):
 		self.widget = a.layer.Spinbox(self, textvariable=self.variable,
 		                              from_=self.setting.lower_limit, to=self.setting.upper_limit)
 		self.variable.trace_add('write', self.save_from_widget)
+
+
+
+
+
+
+
+
+
+types = {
+	settings.Toggle: Toggle,
+	settings.Text: Text,
+	settings.Choice: Choice,
+	settings.Multichoice: Multichoice,
+	settings.Path: Path,
+	settings.Number: Number
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -245,16 +274,9 @@ def _options_size(setting):
 
 
 class _AppearingWidget:
-	def __init__(self, widget: a.layer.Widget):
+	def __init__(self, widget: a.layer.Widget): # type: ignore
 		self.widget = widget
 		self.visible = False
-
-	# def isvisible(self):
-	# 	try:
-	# 		self.widget.pack_info()
-	# 		return True
-	# 	except tk.TclError:
-	# 		return False
 
 	def show(self):
 		if not self.visible:
@@ -265,15 +287,3 @@ class _AppearingWidget:
 		if self.visible:
 			self.widget.forget()
 			self.visible = False
-
-
-
-
-types = {
-	settings.Toggle: Toggle,
-	settings.Text: Text,
-	settings.Choice: Choice,
-	settings.Multichoice: Multichoice,
-	settings.Path: Path,
-	settings.Number: Number
-}

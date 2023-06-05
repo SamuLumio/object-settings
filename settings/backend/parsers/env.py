@@ -1,10 +1,10 @@
 import os
 
-from . import _template
+from . import EnvironmentParserTemplate
 
 
 
-class EnvVarParser(_template.EnvironmentParser):
+class EnvVarParser(EnvironmentParserTemplate):
 
 	@classmethod
 	def generate_key_name(cls, setting_name: str):

@@ -1,19 +1,19 @@
 import os
-from . import base
+from . import base, BaseSetting as _BaseSetting
 
 
 # Yes, all of these overlayed methods have to exist for IDE features to work,
 # one does not simply re- type hint an inherited variable
 
 
-class Toggle(base.Setting):
+class Toggle(_BaseSetting):
 	"""A boolean True/False"""
 	def __init__(self, name, default: bool, section=base.default_section):
 		super().__init__(bool, name, default, section)
 
 
 	def get(self) -> bool:
-		return super().get()
+		return bool(super().get())
 
 	def set(self, new_value: bool):
 		super().set(new_value)
@@ -38,7 +38,7 @@ class Toggle(base.Setting):
 
 
 
-class Choice(base.Setting):
+class Choice(_BaseSetting):
 	"""Choose an option (str) from a list"""
 	def __init__(self, name, options: list[str], default: str, section=base.default_section):
 		self.options = options
@@ -48,7 +48,7 @@ class Choice(base.Setting):
 		return super().validate(value) and (value in self.options)
 
 	def get(self) -> str:
-		return super().get()
+		return str(super().get())
 
 	def set(self, new_value: str):
 		super().set(new_value)
@@ -66,7 +66,7 @@ class Choice(base.Setting):
 
 
 
-class Multichoice(base.Setting):
+class Multichoice(_BaseSetting):
 	"""Choose multiple options (str) from a list"""
 	def __init__(self, name, options: list[str], default_choices: list[str], section=base.default_section):
 		self.options = options
@@ -83,7 +83,7 @@ class Multichoice(base.Setting):
 
 
 	def get(self) -> list[str]:
-		return super().get()
+		return list(super().get())
 
 	def set(self, new_value: list[str]):
 
@@ -118,13 +118,13 @@ class Multichoice(base.Setting):
 
 
 
-class Text(base.Setting):
+class Text(_BaseSetting):
 	"""Just normal text"""
 	def __init__(self, name, default: str, section=base.default_section):
 		super().__init__(str, name, default, section)
 
 	def get(self) -> str:
-		return super().get()
+		return str(super().get())
 
 	def set(self, new_value: str):
 		super().set(new_value)
@@ -139,7 +139,7 @@ class Text(base.Setting):
 
 
 
-class Path(base.Setting):
+class Path(_BaseSetting):
 	"""A file path. Automatically converted between Windows and Unix paths."""
 	def __init__(self, name, default: str, has_to_exist: bool = False, section=base.default_section):
 		self.has_to_exist = has_to_exist
@@ -155,7 +155,7 @@ class Path(base.Setting):
 
 
 	def get(self) -> str:
-		return super().get()
+		return str(super().get())
 
 	def set(self, new_value: str):
 		if os.name == 'nt':
@@ -175,7 +175,7 @@ class Path(base.Setting):
 
 
 
-class Number(base.Setting):
+class Number(_BaseSetting):
 	"""A number (int) that can be incremented and decremented"""
 	def __init__(self, name, default: int, lower_limit: int = 0, upper_limit: int = 100,
 	             section=base.default_section):
@@ -192,7 +192,7 @@ class Number(base.Setting):
 
 
 	def get(self) -> int:
-		return super().get()
+		return int(super().get())
 
 	def set(self, new_value: int):
 		super().set(new_value)

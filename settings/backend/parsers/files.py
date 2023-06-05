@@ -1,10 +1,10 @@
 import appdirs, os, configparser, json, yaml
 
-from . import _template
+from . import StorageParserTemplate
 
 
 
-class _FileParser(_template.StorageParser):
+class _FileParser(StorageParserTemplate):
 	ext: str
 
 	def __init__(self, header="Settings"):
@@ -62,9 +62,9 @@ class CfgParser(_FileParser):
 
 		# Initialize lower-level config parser
 		self._parser = configparser.ConfigParser()
-		self._parser.optionxform = str  # For preserve case
+		self._parser.optionxform = str  # For preserve case    # type: ignore
 
-		# Make sure that section exists
+		# Make sure that header section exists
 		if self.header not in self._parser.sections():
 			self._parser.add_section(self.header)
 

@@ -1,10 +1,10 @@
 import sys, argparse
 
-from . import _template
+from . import EnvironmentParserTemplate
 
 
 
-class CliOptionParser(_template.EnvironmentParser):
+class CliOptionParser(EnvironmentParserTemplate):
 
 	@classmethod
 	def generate_key_name(cls, setting_name: str):

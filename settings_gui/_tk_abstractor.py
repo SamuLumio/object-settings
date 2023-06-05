@@ -17,7 +17,7 @@ class TkAbstractor:
 		self._layer = tkinter.ttk
 
 	def is_ttk(self):
-		return self.layer == tkinter.ttk
+		return self.layer is tkinter.ttk
 
 
 a = TkAbstractor()

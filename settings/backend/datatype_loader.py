@@ -1,4 +1,4 @@
-import configparser
+import configparser, typing
 
 str_converter_functions = {
 	str: str,
@@ -8,7 +8,7 @@ str_converter_functions = {
 	list: lambda string: string.removeprefix("['").removesuffix("']").split("', '")
 }
 
-def get(data, output_type: type[str | int | float | bool | list]):
+def get(data: typing.Any, output_type: type[str | int | float | bool | list]):
 	if isinstance(data, output_type):
 		return data
 	elif isinstance(data, float) and output_type == int:
