@@ -33,6 +33,9 @@ class values:
 	custom_dir: str | None = None
 	"""Custom directory to store config files in instead of the one generated with app_name"""
 
+	default_section_name: str = "Settings"
+	"""Title for the default section that settings are placed under. Defaults to 'Settings'."""
+
 	use_environment: bool = True
 	"""Allow loading setting values from the enviroment (like env vars and command line options). \n
 	If a setting's value has been set from the environment, it takes priority over any stored configurations, 

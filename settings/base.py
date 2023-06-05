@@ -22,10 +22,22 @@ class Section:
 		return self._storage
 
 
-
-
 all_sections: list[Section] = []
-default_section = Section('Settings')
+
+
+
+class _DefaultSection(Section):
+
+	@property
+	def name(self):
+		return config.default_section_name
+	
+	@name.setter
+	def name(self, value):
+		pass
+	
+default_section = _DefaultSection('')
+
 
 
 

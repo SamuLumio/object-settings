@@ -17,7 +17,6 @@ class _FileParser(StorageParserTemplate):
 		if isinstance(config.custom_dir, str):
 			dir = config.custom_dir
 		else:
-			# noinspection PyTypeChecker
 			dir = appdirs.user_config_dir(config.app_name, False)
 		return os.path.join(dir, self.header + self.ext)
 
@@ -59,17 +58,15 @@ class CfgParser(_FileParser):
 
 	def __init__(self, header="Settings"):
 		super().__init__(header)
-
 		# Initialize lower-level config parser
 		self._parser = configparser.ConfigParser()
 		self._parser.optionxform = str  # For preserve case    # type: ignore
 
+	def _read(self):
+		self._parser.read(self.path)
 		# Make sure that header section exists
 		if self.header not in self._parser.sections():
 			self._parser.add_section(self.header)
-
-	def _read(self):
-		self._parser.read(self.path)
 		self.values = dict(self._parser[self.header])
 
 	def _write(self):
