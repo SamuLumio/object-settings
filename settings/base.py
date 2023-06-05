@@ -20,6 +20,10 @@ class Section:
 		if self._storage is None:
 			self._storage = backend.Storage(self.name)
 		return self._storage
+	
+	def is_default(self):
+		"""Check if this section is the default section"""
+		return self == default_section
 
 
 all_sections: list[Section] = []

@@ -10,7 +10,7 @@ class SettingsFrame(a.layer.Frame): # type: ignore
 		self.sections = []
 		for section in settings.all_sections:
 
-			if section != settings.base.default_section:
+			if not section.is_default():
 				a.layer.Frame(self).pack(pady=config.padding)  # for padding
 				a.layer.Label(self, text=section.name, font='big').pack(padx=config.padding)
 
