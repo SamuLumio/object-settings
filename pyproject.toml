@@ -8,6 +8,10 @@ keywords = ["settings", "setting", "config", "OOP", "GUI"]
 urls = {"Homepage"="https://github.com/SamuLumio/object-settings"}
 license = {text="MIT License"}
 
+[tool.setuptools]
+include-package-data = true
+package-data = {'settings_gui.tkinter'=['icons/*']}
+
 dependencies = [
     "appdirs>=1.3.0",
     "PyYAML"
@@ -26,20 +30,3 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: User Interfaces"
 ]
-
-
-
-[tool.setuptools]
-
-packages = [
-    "settings",
-    "settings.backend",
-    "settings.backend.parsers",
-
-    "settings_gui",
-    "settings_gui.tkinter",
-    "settings_gui.ttk",
-]
-
-include-package-data = true
-package-data = {'settings_gui.tkinter'=['icons/*']}
