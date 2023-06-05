@@ -8,14 +8,14 @@ class SettingsFrame(a.layer.Frame): # type: ignore
 	def __init__(self, master, autosave=True, save_button: typing.Optional[str] = None):
 		super().__init__(master)
 		self.sections = []
-		for section in settings.all_sections:
 
-			if not section.is_default():
+		for section in settings.all_sections:
+			if section.settings != []:
 				a.layer.Frame(self).pack(pady=config.padding)  # for padding
 				a.layer.Label(self, text=section.name, font='big').pack(padx=config.padding)
-
-				self.sections.append(section_frames.SectionFrame(self, section, autosave=autosave))
-				self.sections[-1].pack(fill='x', expand=True, padx=2*config.padding, pady=3*config.padding)
+				section_frame = section_frames.SectionFrame(self, section, autosave=autosave)
+				section_frame.pack(fill='x', expand=True, padx=2*config.padding, pady=3*config.padding)
+				self.sections.append(section_frame)
 
 		if isinstance(save_button, str):
 			button = a.layer.Button(self, command=self.save_settings, text=save_button)

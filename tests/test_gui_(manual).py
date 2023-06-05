@@ -25,6 +25,7 @@ def test_tkinter():
 	window.title("Check that tkinter GUI looks right")
 
 	import settings_gui.tkinter
+	settings.base.default_section.settings.clear()
 	frame = settings_gui.tkinter.SettingsFrame(window)
 	assert isinstance(frame, tkinter.Frame)
 	frame.pack(padx=5, pady=5, fill='both')
@@ -45,6 +46,7 @@ def test_ttk():
 	import settings_gui.ttk
 	settings_gui.config.config(padding=4)
 	tkinter.ttk.Frame(window).pack(pady=2)
+	settings.base.default_section.settings.clear()
 	frame = settings_gui.ttk.SettingsFrame(window)
 	assert isinstance(frame, tkinter.ttk.Frame)
 	for section in frame.sections:
