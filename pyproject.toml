@@ -4,14 +4,10 @@ name = "object-settings"
 version = "4.2.dev"
 description = "Simple object-oriented config library, where your settings are objects"
 readme = "README.md"
+dynamic = ["dependencies"]
 keywords = ["settings", "setting", "config", "OOP", "GUI"]
 urls = {"Homepage"="https://github.com/SamuLumio/object-settings"}
 license = {text="MIT License"}
-
-dependencies = [
-    "appdirs>=1.3.0",
-    "PyYAML"
-]
 
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -30,3 +26,4 @@ classifiers = [
 [tool.setuptools]
 include-package-data = true
 package-data = {'settings_gui.tkinter'=['icons/*']}
+dynamic = { dependencies = {file = "requirements.txt"} }
