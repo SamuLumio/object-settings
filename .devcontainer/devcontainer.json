@@ -1,0 +1,20 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
+{
+	"name": "object-settings",
+	"image": "mcr.microsoft.com/devcontainers/python:3",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"tamasfe.even-better-toml"
+			],
+			"settings": {
+				"python.testing.pytestEnabled": true,
+				"python.testing.pytestArgs": ["tests"]
+			}
+		}
+	},
+
+	"postCreateCommand": "pip install --user -r requirements.dev.txt"
+}
