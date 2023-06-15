@@ -70,7 +70,7 @@ class MappedChoice(Choice):
 	"""Choose an option (str) from a list, but have a different internal value mapped to it. 
 	Mappings are defined as dictionary with internal values as keys and external values as values. 
 	You can get the internal side of the current value with the `get_internal()` method 
-	or the `internal_value` property. Otherwise behaves like Choice.
+	or the `internal_value` property. Otherwise behaves like normal Choice.
 	\n
 	For example, a logging level setting would have debug, info and error as user-facing values, 
 	but 0, 1 and 2 as internal values: \n
@@ -145,6 +145,49 @@ class Multichoice(_BaseSetting):
 		value = self.get()
 		value.remove(item)
 		self.set(value)
+
+
+
+
+
+class MappedMultichoice(Multichoice):
+	"""Choose multiple options (str) from a list, but have different internals values mapped to them. 
+	Mappings are defined as dictionary with internal values as keys and external values as values. 
+	You can get the internal sides of the current choices with the `get_internal()` method 
+	or the `internal_value` property. Otherwise behaves like normal Multihoice.
+	\n
+	For example, a file type selection could have common names as user-facing values, 
+	but the file extensions as internal values: \n
+	```
+	filetypes = settings.MappedMultichoice(
+		"Select file types", 
+		{'.mp4': "Video", '.mp3': "Audio", '.vtt': "Subtitles"}, 
+		default_choices=["Video", "Audio"]
+	)
+	```
+	"""
+	def __init__(self, name, mappings: dict[typing.Any, str], default_choices: list[str], 
+	      section=base.default_section):
+		self.mappings = mappings
+		super().__init__(name, list(mappings.values()), default_choices, section)
+
+	def get_internal(self) -> list[typing.Any]:
+		"""Get the internal sides of the current choices"""
+		value = self.get()
+		value_internal = []
+		for internal, external in self.mappings.items():
+			if external in value:
+				value_internal.append(internal)
+		if len(value_internal) == len(value):
+			return value_internal
+		else:
+			raise KeyError("No mappings for all current choices. \
+			Did you change the options after setting creation without updating the mapping dictionary?")
+	
+	@property
+	def internal_value(self) -> list[typing.Any]:
+		"""The internal sides of the current choices (cannot be set from here)"""
+		return self.get_internal()
 
 
 
