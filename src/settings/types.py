@@ -1,4 +1,4 @@
-import os
+import os, typing, types
 from . import base, BaseSetting as _BaseSetting
 
 
@@ -61,6 +61,38 @@ class Choice(_BaseSetting):
 	@value.setter
 	def value(self, new_value: str):
 		self.set(new_value)
+
+
+
+
+
+class MappedChoice(Choice):
+	"""Choose an option (str) from a list, but have a different internal value mapped to it. 
+	Mappings are defined as dictionary with internal values as keys and external values as values. 
+	You can get the internal side of the current value with the `get_internal()` method 
+	or the `internal_value` property. Otherwise behaves like Choice.
+	\n
+	For example, a logging level setting would have debug, info and error as user-facing values, 
+	but 0, 1 and 2 as internal values: \n
+	`log_level = settings.MappedChoice("Level of logging", {0: "Debug", 1: "Info", 2: "Error"}, "Info")`
+	"""
+	def __init__(self, name, mappings: dict[typing.Any, str], default: str, section=base.default_section):
+		self.mappings = mappings
+		super().__init__(name, list(mappings.values()), default, section)
+
+	def get_internal(self) -> typing.Any:
+		"""Get the internal side of the current value"""
+		value = self.get()
+		for internal, external in self.mappings.items():
+			if external == value:
+				return internal
+		raise KeyError("No mapping for current value. \
+		 Did you change the options after setting creation without updating the mapping dictionary?")
+	
+	@property
+	def internal_value(self) -> typing.Any:
+		"""The internal side of the current value (cannot be set from here)"""
+		return self.get_internal()
 
 
 

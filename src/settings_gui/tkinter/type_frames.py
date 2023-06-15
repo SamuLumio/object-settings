@@ -240,6 +240,7 @@ types = {
 	settings.Toggle: Toggle,
 	settings.Text: Text,
 	settings.Choice: Choice,
+	settings.MappedChoice: Choice,
 	settings.Multichoice: Multichoice,
 	settings.Path: Path,
 	settings.Number: Number
