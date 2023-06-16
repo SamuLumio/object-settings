@@ -30,6 +30,7 @@ all_sections: list[Section] = []
 
 
 
+
 class _DefaultSection(Section):
 
 	@property

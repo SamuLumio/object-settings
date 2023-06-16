@@ -1,4 +1,4 @@
-import os, typing, types
+import os, typing
 from . import base, BaseSetting as _BaseSetting
 
 
@@ -6,18 +6,20 @@ from . import base, BaseSetting as _BaseSetting
 # one does not simply re- type hint an inherited variable
 
 
+
+
+
 class Toggle(_BaseSetting):
 	"""A boolean True/False"""
+
 	def __init__(self, name, default: bool, section=base.default_section):
 		super().__init__(bool, name, default, section)
-
 
 	def get(self) -> bool:
 		return bool(super().get())
 
 	def set(self, new_value: bool):
 		super().set(new_value)
-
 
 	@property
 	def value(self) -> bool:
@@ -26,7 +28,6 @@ class Toggle(_BaseSetting):
 	@value.setter
 	def value(self, new_value: bool):
 		self.set(new_value)
-
 
 	def toggle(self):
 		self.set(not self.get())
@@ -40,6 +41,7 @@ class Toggle(_BaseSetting):
 
 class Choice(_BaseSetting):
 	"""Choose an option (str) from a list"""
+
 	def __init__(self, name, options: list[str], default: str, section=base.default_section):
 		self.options = options
 		super().__init__(str, name, default, section)
@@ -52,7 +54,6 @@ class Choice(_BaseSetting):
 
 	def set(self, new_value: str):
 		super().set(new_value)
-
 
 	@property
 	def value(self) -> str:
@@ -73,9 +74,10 @@ class MappedChoice(Choice):
 	or the `internal_value` property. Otherwise behaves like normal Choice.
 	\n
 	For example, a logging level setting would have debug, info and error as user-facing values, 
-	but 0, 1 and 2 as internal values: \n
+	but 0, 1 and 2 as internal values: 
 	`log_level = settings.MappedChoice("Level of logging", {0: "Debug", 1: "Info", 2: "Error"}, "Info")`
 	"""
+
 	def __init__(self, name, mappings: dict[typing.Any, str], default: str, section=base.default_section):
 		self.mappings = mappings
 		super().__init__(name, list(mappings.values()), default, section)
@@ -100,10 +102,10 @@ class MappedChoice(Choice):
 
 class Multichoice(_BaseSetting):
 	"""Choose multiple options (str) from a list"""
+
 	def __init__(self, name, options: list[str], default_choices: list[str], section=base.default_section):
 		self.options = options
 		super().__init__(list, name, default_choices, section)
-
 
 	def validate(self, value):
 		conditions = [
@@ -113,19 +115,14 @@ class Multichoice(_BaseSetting):
 		]
 		return all(conditions)
 
-
 	def get(self) -> list[str]:
 		return list(super().get())
 
 	def set(self, new_value: list[str]):
-
-
 		for value in new_value:
 			if value not in self.options:
 				raise ValueError(f"New value {new_value} not in options ({self.options})")
-
 		super().set(new_value)
-
 
 	@property
 	def value(self) -> list[str]:
@@ -134,7 +131,6 @@ class Multichoice(_BaseSetting):
 	@value.setter
 	def value(self, new_value: list[str]):
 		self.set(new_value)
-
 
 	def append(self, item: str):
 		value = self.get()
@@ -154,7 +150,7 @@ class MappedMultichoice(Multichoice):
 	"""Choose multiple options (str) from a list, but have different internals values mapped to them. 
 	Mappings are defined as dictionary with internal values as keys and external values as values. 
 	You can get the internal sides of the current choices with the `get_internal()` method 
-	or the `internal_value` property. Otherwise behaves like normal Multihoice.
+	or the `internal_value` property. Otherwise behaves like normal Multichoice.
 	\n
 	For example, a file type selection could have common names as user-facing values, 
 	but the file extensions as internal values: \n
@@ -164,8 +160,8 @@ class MappedMultichoice(Multichoice):
 		{'.mp4': "Video", '.mp3': "Audio", '.vtt': "Subtitles"}, 
 		default_choices=["Video", "Audio"]
 	)
-	```
-	"""
+	``` """
+
 	def __init__(self, name, mappings: dict[typing.Any, str], default_choices: list[str], 
 	      section=base.default_section):
 		self.mappings = mappings
@@ -195,6 +191,7 @@ class MappedMultichoice(Multichoice):
 
 class Text(_BaseSetting):
 	"""Just normal text"""
+
 	def __init__(self, name, default: str, section=base.default_section):
 		super().__init__(str, name, default, section)
 
@@ -214,12 +211,14 @@ class Text(_BaseSetting):
 
 
 
+
+
 class Path(_BaseSetting):
 	"""A file path. Automatically converted between Windows and Unix paths."""
+
 	def __init__(self, name, default: str, has_to_exist: bool = False, section=base.default_section):
 		self.has_to_exist = has_to_exist
 		super().__init__(str, name, default, section)
-
 
 	def validate(self, value):
 		valid = super().validate(value)
@@ -227,7 +226,6 @@ class Path(_BaseSetting):
 			return valid and os.path.exists(value)
 		else:
 			return valid
-
 
 	def get(self) -> str:
 		return str(super().get())
@@ -250,14 +248,15 @@ class Path(_BaseSetting):
 
 
 
+
 class Number(_BaseSetting):
 	"""A number (int) that can be incremented and decremented"""
+
 	def __init__(self, name, default: int, lower_limit: int = 0, upper_limit: int = 100,
 	             section=base.default_section):
 		self.lower_limit = lower_limit
 		self.upper_limit = upper_limit
 		super().__init__(int, name, default, section)
-
 
 	def validate(self, value):
 		if type(value) == int:  # The base method does check for this, but the size check could crash
@@ -265,13 +264,11 @@ class Number(_BaseSetting):
 		else:
 			return False
 
-
 	def get(self) -> int:
 		return int(super().get())
 
 	def set(self, new_value: int):
 		super().set(new_value)
-
 
 	@property
 	def value(self) -> int:
