@@ -154,7 +154,9 @@ List of currently available setting types:
 
 - Toggle (bool)
 - Choice (str)  [from a list of options]
+- MappedChoice (str)  [from a list of options]
 - Multichoice (list)  [of things from a list of options]
+- MappedMultichoice (str)  [of things from a list of options]
 - Text (str)
 - Path (str)
 - Number (int)
