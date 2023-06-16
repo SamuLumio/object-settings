@@ -137,10 +137,10 @@ Here's an example of some dummy settings with both libraries:
 
 *(notice the warning for the misspelt download path)*
 
-![Ttk](readme-images/ttk.png)
+![Ttk](https://github.com/SamuLumio/object-settings/blob/master/readme-images/ttk.png?raw=true)
 *Nice-looking ttk (theme: Sun Valley dark)*
 
-![Tkinter](readme-images/tkinter.png)
+![Tkinter](https://github.com/SamuLumio/object-settings/blob/master/readme-images/tkinter.png?raw=true)
 *Bare tkinter works too*
 
 And you can get this automatically for all your defined settings by just calling one function (`SettingsFrame` or `SettingsWindow`, depending on preference)
