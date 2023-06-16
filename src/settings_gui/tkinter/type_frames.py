@@ -2,7 +2,7 @@ import os, typing, colorsys, settings, subprocess, tkinter.filedialog
 import tkinter as tk
 
 from ..config import config, strings
-from . import a
+from . import a, lib
 
 
 
@@ -16,8 +16,8 @@ class _Base(a.layer.Frame): # type: ignore
 		self.autosave = autosave
 		self.width_limit = width_limit
 
-		self.error_photoimage = tk.PhotoImage(file=_icon_path('error'))
-		self.error_icon = _AppearingWidget(a.layer.Label(self, image=self.error_photoimage))
+		self.error_photoimage = lib.Icon('error')
+		self.error_icon = lib.AppearingWidget(a.layer.Label(self, image=self.error_photoimage))
 
 		a.layer.Label(self, text=setting.name).pack(side='left', padx=config.padding)
 		a.layer.Frame(self).pack(side='left', padx=config.padding*3)
@@ -37,6 +37,7 @@ class _Base(a.layer.Frame): # type: ignore
 			self.variable.trace_add('write', self.validate)
 
 		self.variable.set(self.setting.get())
+
 
 	def init(self):
 		"""For faster subclassing"""
@@ -85,6 +86,7 @@ class _Base(a.layer.Frame): # type: ignore
 
 
 
+
 class Toggle(_Base):
 	"""A checkbutton, or a switch if available from ttk theme"""
 	def init(self):
@@ -96,12 +98,14 @@ class Toggle(_Base):
 
 
 
+
 class Choice(_Base):
 	"""A horizontal radiobutton-row or an expandable menu, depending on the number of options"""
 	def init(self):
 		self.setting: settings.Choice
 		self.variable = tk.StringVar()
-		if _options_size(self.setting) <= self.width_limit:
+		options_size = lib.calculate_options_size(self.setting.options)
+		if options_size <= self.width_limit:
 			frame = a.layer.Frame(self)
 			for option in reversed(self.setting.options):
 				a.layer.Radiobutton(frame, text=option, value=option, variable=self.variable,
@@ -114,20 +118,20 @@ class Choice(_Base):
 
 
 
+
 class Multichoice(_Base):
 	"""Either a horizontal or vertical checkbutton-row, depending on the number of options"""
 	def init(self):
 		self.setting: settings.Multichoice
 		self.variable = self.MultichoiceVar(self.setting.options)
 		self.widget = a.layer.Frame(self)
-		direction = 'left' if (_options_size(self.setting) <= self.width_limit) else 'top'
+		options_size = lib.calculate_options_size(self.setting.options)
+		direction = 'left' if options_size <= self.width_limit else 'top'
 
 		for option in self.setting.options:
-			# noinspection PyTypeChecker
 			a.layer.Checkbutton(self.widget, text=option, variable=self.variable[option],
 			                    command=self.save_from_widget).pack(side=direction, anchor='w',
 			                                                        padx=config.padding / 2)
-
 
 	class MultichoiceVar:
 		def __init__(self, options: list):
@@ -149,13 +153,13 @@ class Multichoice(_Base):
 
 
 
+
 class Text(_Base):
 	"""Entry field with an appearing done-button (if autosave)"""
 	def init(self):
 		self.variable = tk.StringVar()
 		self.widget = a.layer.Entry(self, textvariable=self.variable)
-		self.icons = []
-		self.done_button = _AppearingWidget(self.icon_button('checkmark', self.save_from_widget))
+		self.done_button = lib.AppearingWidget(lib.icon_button(self, 'checkmark', self.save_from_widget))
 
 		if self.autosave:
 			self.variable.trace_add('write', lambda *args: self.show_done_button())
@@ -169,27 +173,6 @@ class Text(_Base):
 		self.done_button.hide()
 
 
-	def icon_button(self, icon: str, command: typing.Callable):
-
-		if a.is_ttk():
-			hex = a.layer.Style().lookup('TButton', 'background') # type: ignore
-			hex = str(hex).removeprefix('#')
-			rgb = tuple(int(hex[i:i + 2], 16) for i in (0, 2, 4))
-			hls = colorsys.rgb_to_hls(*rgb)
-			brightness = hls[1]
-			if brightness > 50:
-				icon += '-black'
-			else:
-				icon += '-white'
-		else:
-			icon += '-black'
-
-		path = _icon_path(icon)
-
-		icon_image = tk.PhotoImage(file=path)
-		self.icons.append(icon_image)
-		return a.layer.Button(self, image=icon_image, command=command)
-
 
 
 
@@ -198,7 +181,7 @@ class Path(Text):
 	def init(self):
 		super().init()
 		if not self.setting.set_externally:
-			self.icon_button('folder', self.browse).pack(side='right', padx=config.padding)
+			lib.icon_button(self, 'folder', self.browse).pack(side='right', padx=config.padding)
 
 	def browse(self):
 		try:
@@ -215,6 +198,7 @@ class Path(Text):
 			popup.add_command(label=strings.file, command=lambda: open(tkinter.filedialog.askopenfilename))
 			popup.add_command(label=strings.dir, command=lambda: open(tkinter.filedialog.askdirectory))
 			popup.tk_popup(*self.winfo_pointerxy())
+
 
 
 
@@ -245,46 +229,3 @@ types = {
 	settings.Path: Path,
 	settings.Number: Number
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def _icon_path(icon: str):
-	if '.' not in icon:
-		icon += '.png'
-	return os.path.join(os.path.dirname(__file__), 'icons', icon)
-
-
-def _options_size(setting):
-	text = sum(len(o) for o in setting.options)
-	icons = len(setting.options) * 3
-	return text + icons
-
-
-
-
-class _AppearingWidget:
-	def __init__(self, widget: a.layer.Widget): # type: ignore
-		self.widget = widget
-		self.visible = False
-
-	def show(self):
-		if not self.visible:
-			self.widget.pack(side='right', padx=config.padding*2)
-			self.visible = True
-
-	def hide(self):
-		if self.visible:
-			self.widget.forget()
-			self.visible = False
