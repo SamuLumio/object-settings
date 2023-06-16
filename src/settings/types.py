@@ -69,7 +69,7 @@ class Choice(_BaseSetting):
 
 class MappedChoice(Choice):
 	"""Choose an option (str) from a list, but have a different internal value mapped to it. 
-	Mappings are defined as dictionary with internal values as keys and external values as values. 
+	Mappings are defined as a dictionary with internal values as keys and external values as values. 
 	You can get the internal side of the current value with the `get_internal()` method 
 	or the `internal_value` property. Otherwise behaves like normal Choice.
 	\n
@@ -147,8 +147,8 @@ class Multichoice(_BaseSetting):
 
 
 class MappedMultichoice(Multichoice):
-	"""Choose multiple options (str) from a list, but have different internals values mapped to them. 
-	Mappings are defined as dictionary with internal values as keys and external values as values. 
+	"""Choose multiple options (str) from a list, but have different internal values mapped to them. 
+	Mappings are defined as a dictionary with internal values as keys and external values as values. 
 	You can get the internal sides of the current choices with the `get_internal()` method 
 	or the `internal_value` property. Otherwise behaves like normal Multichoice.
 	\n
@@ -214,7 +214,8 @@ class Text(_BaseSetting):
 
 
 class Path(_BaseSetting):
-	"""A file path. Automatically converted between Windows and Unix paths."""
+	"""A file path whose existence can be checked. 
+	Automatically converted between Windows and Unix paths."""
 
 	def __init__(self, name, default: str, has_to_exist: bool = False, section=base.default_section):
 		self.has_to_exist = has_to_exist
@@ -250,7 +251,7 @@ class Path(_BaseSetting):
 
 
 class Number(_BaseSetting):
-	"""A number (int) that can be incremented and decremented"""
+	"""An integer that can be set or incremented and decremented"""
 
 	def __init__(self, name, default: int, lower_limit: int = 0, upper_limit: int = 100,
 	             section=base.default_section):

@@ -134,6 +134,7 @@ Here's an example of some dummy settings with both libraries:
   <figcaption>Nice-looking ttk (theme: Sun Valley dark)</figcaption>
 </figure>
 
+
 <figure>
   <img src="readme-images/tkinter.png">
   <figcaption>Bare tkinter works too</figcaption>
@@ -152,13 +153,21 @@ Setting types
 
 List of currently available setting types:
 
-- Toggle (bool)
-- Choice (str)  [from a list of options]
-- MappedChoice (str)  [from a list of options]
-- Multichoice (list)  [of things from a list of options]
-- MappedMultichoice (str)  [of things from a list of options]
-- Text (str)
-- Path (str)
-- Number (int)
+- `Toggle`:
+    A boolean True/False
+- `Choice`:
+    Choose an option (str) from a list
+- `MappedChoice`:
+    Choose an option (str) from a list, but have a different internal value mapped to it
+- `Multichoice`:
+    Choose multiple options (str) from a list
+- `MappedMultichoice`:
+    Choose multiple options (str) from a list, but have different internal values mapped to them
+- `Text`:
+    Just a basic text value
+- `Path`:
+    A file path whose existence can be checked
+- `Number`:
+    An integer that can be set or incremented and decremented
 
 You can also inherit from the base Setting class to easily create custom ones.
