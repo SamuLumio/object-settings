@@ -1,11 +1,11 @@
 import settings, tkinter, typing
 
-from ..config import config
+from ..config import config, strings
 from . import section_frames, a
 
 
 class SettingsFrame(a.layer.Frame): # type: ignore
-	def __init__(self, master, autosave=True, save_button: typing.Optional[str] = None):
+	def __init__(self, master, autosave=True, save_button=False):
 		super().__init__(master)
 		self.sections = []
 
@@ -18,7 +18,12 @@ class SettingsFrame(a.layer.Frame): # type: ignore
 				self.sections.append(section_frame)
 
 		if isinstance(save_button, str):
-			button = a.layer.Button(self, command=self.save_settings, text=save_button)
+			save_text = save_button  # For backwards compatibility
+		else:
+			save_text = strings.save
+
+		if save_button:
+			button = a.layer.Button(self, command=self.save_settings, text=save_text)
 			if a.is_ttk():
 				button.configure(style='Accent.TButton')  # type: ignore
 			button.pack(pady=config.padding*3)
@@ -32,7 +37,7 @@ class SettingsFrame(a.layer.Frame): # type: ignore
 
 
 class SettingsWindow(tkinter.Toplevel):
-	def __init__(self, master, title="Settings", autosave=True, save_button: typing.Optional[str] = None):
+	def __init__(self, master, title="Settings", autosave=True, save_button=False):
 		super().__init__(master)
 		SettingsFrame(self, autosave, save_button).pack(padx=config.padding*2, pady=config.padding*2, fill='both')
 

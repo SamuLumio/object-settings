@@ -15,6 +15,7 @@ class strings:
 	file: str = "File"
 	dir: str = "Directory"
 	set_from_env: str = "(set externally)"
+	save: str = "Save"
 
 
 
