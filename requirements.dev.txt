@@ -1,4 +1,9 @@
 -r requirements.txt
 
+# Testing
 pytest
 sv-ttk
+
+# Building and uploading
+build
+twine
