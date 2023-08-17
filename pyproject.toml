@@ -1,7 +1,7 @@
 [project]
 
 name = "object-settings"
-version = "4.3.dev"
+version = "4.3"
 description = "Simple object-oriented config library, where your settings are objects"
 readme = "README.md"
 dynamic = ["dependencies"]
