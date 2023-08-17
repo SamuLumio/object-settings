@@ -163,6 +163,8 @@ List of currently available setting types:
     Choose multiple options (str) from a list
 - `MappedMultichoice`:
     Choose multiple options (str) from a list, but have different internal values mapped to them
+- `Array`:
+    An iterable of any arbitrary strings
 - `Text`:
     Just a basic text value
 - `Path`:
