@@ -101,7 +101,9 @@ class MappedChoice(Choice):
 
 
 class Multichoice(_BaseSetting):
-	"""Choose multiple options (str) from a list"""
+	"""Choose multiple options (str) from a list. 
+	NOTE: getting the value returns a new list everytime, 
+	so mutations to it won't apply to the stored value"""
 
 	def __init__(self, name, options: list[str], default_choices: list[str], section=base.default_section):
 		self.options = options
