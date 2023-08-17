@@ -37,6 +37,14 @@ def test_multichoice():
 	)
 
 
+def test_array():
+	_base_validate(
+		setting=settings.Array("TestArray"),
+		valid_values=[["abc", "2"], ["h"], []],
+		invalid_values=[True, 420, [1, 2, 3]]
+	)
+
+
 def test_text():
 	_base_validate(
 		setting=settings.Text("TestText", "default"),

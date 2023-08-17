@@ -189,6 +189,51 @@ class MappedMultichoice(Multichoice):
 
 
 
+class Array(_BaseSetting):
+	"""An array of any arbitrary strings. 
+	NOTE: getting the value returns an immutable tuple, but for convenience
+	the values *can* be edited on the fly with the setting's append() and remove() methods."""
+
+	def __init__(self, name, default: typing.Iterable[str] = [], section=base.default_section):
+		super().__init__(list, name, default, section)
+
+	def validate(self, value) -> bool:
+		try:
+			value = list(value)
+		except:
+			return False
+		else:
+			return super().validate(value) and all(isinstance(i, str) for i in value)
+
+	def get(self) -> tuple:
+		return tuple(super().get())
+
+	def set(self, new_value: typing.Iterable):
+		super().set(list(new_value))
+
+	@property
+	def value(self) -> tuple:
+		return self.get()
+
+	@value.setter
+	def value(self, new_value: typing.Iterable):
+		self.set(new_value)
+
+	def append(self, item: str):
+		temp_list = list(self.value)
+		temp_list.append(item)
+		self.set(temp_list)
+
+	def remove(self, item: str):
+		temp_list = list(self.value)
+		temp_list.remove(item)
+		self.set(temp_list)
+
+	
+
+
+
+
 class Text(_BaseSetting):
 	"""Just normal text"""
 
