@@ -33,6 +33,7 @@ def test_bool():
 
 def test_list():
 	assert load([], list) == []
+	assert load("[]", list) == []
 	LIST = ["test", "1", "2"]
 	assert load(LIST, list) == LIST
 	assert load(str(LIST), list) == LIST

@@ -13,6 +13,8 @@ def get(data: typing.Any, output_type: type[str | int | float | bool | list]):
 		return data
 	elif isinstance(data, float) and output_type == int:
 		return int(data)
+	elif isinstance(data, str) and output_type == list and data == '[]':
+		return []
 	elif isinstance(data, str) and output_type in str_converter_functions:
 		function = str_converter_functions[output_type]
 		return function(data)
