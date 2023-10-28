@@ -36,7 +36,8 @@ class _Base(a.layer.Frame): # type: ignore
 			self.variable.trace_add('write', self.update_width)
 			self.variable.trace_add('write', self.validate)
 
-		self.variable.set(self.setting.get())
+		self.update_variable()
+		self.setting.add_listener(self.update_variable)
 
 
 	def init(self):
@@ -54,12 +55,16 @@ class _Base(a.layer.Frame): # type: ignore
 				self.widget.state(["!invalid"])
 
 
-	def validate(self, *args):
+	def validate(self, *dummy_args):
 		result = self.setting.validate(self.variable.get())
 		self.set_error(not result)
 
+	def update_variable(self, *dummy_args):
+		if self.setting.get() != self.variable.get():
+			self.variable.set(self.setting.get())
 
-	def update_width(self, *args):
+
+	def update_width(self, *dummy_args):
 		try:
 			width = len(str(self.variable.get())) + 1
 			# if a.is_ttk() and isinstance(self.widget, a.layer.Spinbox):
@@ -71,12 +76,13 @@ class _Base(a.layer.Frame): # type: ignore
 
 
 	def save(self):
-		if not self.setting.set_externally:
-			try:
-				self.setting.set(self.variable.get())
-				self.set_error(False)
-			except (ValueError, tk.TclError):
-				self.set_error(True)
+		if self.setting.get() != self.variable.get():
+			if not self.setting.set_externally:
+				try:
+					self.setting.set(self.variable.get())
+					self.set_error(False)
+				except (ValueError, tk.TclError):
+					self.set_error(True)
 
 
 	def save_from_widget(self, *args):
@@ -109,11 +115,11 @@ class Choice(_Base):
 			frame = a.layer.Frame(self)
 			for option in reversed(self.setting.options):
 				a.layer.Radiobutton(frame, text=option, value=option, variable=self.variable,
-				                    command=self.save_from_widget).pack(side='right', padx=config.padding)
+									command=self.save_from_widget).pack(side='right', padx=config.padding)
 			self.widget = frame
 		else:
 			self.widget = a.layer.OptionMenu(self, self.variable, self.setting.value, *self.setting.options,
-			                                 command=self.save_from_widget)
+											 command=self.save_from_widget)
 
 
 
@@ -130,8 +136,8 @@ class Multichoice(_Base):
 
 		for option in self.setting.options:
 			a.layer.Checkbutton(self.widget, text=option, variable=self.variable[option],
-			                    command=self.save_from_widget).pack(side=direction, anchor='w',
-			                                                        padx=config.padding / 2)
+								command=self.save_from_widget).pack(side=direction, anchor='w',
+																	padx=config.padding / 2)
 
 	class MultichoiceVar:
 		def __init__(self, options: list):
@@ -209,7 +215,7 @@ class Number(_Base):
 		self.setting: settings.Number
 		self.variable = tk.IntVar()
 		self.widget = a.layer.Spinbox(self, textvariable=self.variable,
-		                              from_=self.setting.lower_limit, to=self.setting.upper_limit)
+									  from_=self.setting.lower_limit, to=self.setting.upper_limit)
 		self.variable.trace_add('write', self.save_from_widget)
 
 
