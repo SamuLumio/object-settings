@@ -235,6 +235,7 @@ class Float(_Base):
 			textvariable=self.variable,
 			from_=self.setting.lower_limit,
 			to=self.setting.upper_limit,
+			increment=self.setting.step_size,
 			format=f'%.{self.setting.precision}f'
 		)
 		self.variable.trace_add('write', self.save_from_widget)
