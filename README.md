@@ -131,7 +131,7 @@ server = settings.Choice("Mirror", ["Europe", "Asia", "America", "Africa"], "Asi
 
 ## Did I mention free GUIs?
 
-That's right, this library also includes a separate `settings_gui` package that has pre-made settings menus for both tkinter and ttk, with GTK and others to come. They have full integration with the aforementioned systems, like validation and sections.
+That's right, this library also includes a separate `settings_gui` package that has pre-made settings menus for various GUI toolkits. They have full integration with the aforementioned systems, like validation and sections.
 
 Here's an example of some dummy settings with both libraries: 
 
@@ -143,13 +143,33 @@ Here's an example of some dummy settings with both libraries:
 ![Tkinter](https://github.com/SamuLumio/object-settings/blob/master/readme-images/tkinter.png?raw=true)
 *Bare tkinter works too*
 
-And you can get this automatically for all your defined settings by just calling one function (`SettingsFrame` or `SettingsWindow`, depending on preference)
+
+`settings_gui` has subpackages for tkinter and ttk, with at least GTK coming in the future.
+
+You can import the subpackage for your toolkit and then use a frame or a full settings window.
+
+Example with tkinter:
+```python
+import tkinter, settings, settings_gui.tkinter
+
+settings.setup("Crazy app")
+settings.Toggle("I'm graphical baby!", True)
+
+root = tkinter.Tk()
+settings_gui.tkinter.SettingsWindow(root)
+root.mainloop()
+```
+
+You can also configure some parameters for the gui package to make it fit in:
+- Change options like widget padding by calling `settings_gui.config.config()`
+- Change the strings the widgets use (save button, file chooser, ...) by calling `settings_gui.config.strings()`
+
 
 Or, if you want to get more custom/contextual, you can also use the individual setting widgets and place them around your app (submodule `type_frames`).
 
 
 
-## Setting types
+## All setting types
 
 List of currently available setting types:
 
