@@ -99,7 +99,7 @@ class BaseSetting:
 			raise ValueError(f"New setting value {new_value} is invalid")
 		self.section.storage.set(self.name, new_value)
 		for listener in self.listeners:
-			threading.Thread(target=listener).start()
+			listener()
 
 	@property
 	def set_externally(self):
