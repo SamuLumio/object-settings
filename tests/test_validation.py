@@ -67,3 +67,11 @@ def test_number():
 		valid_values=[-10, -5, 0, 5, 10],
 		invalid_values=[-11, 11, 69, "some string", [2]]
 	)
+
+
+def test_float():
+	_base_validate(
+		setting=settings.Float("TestFloat", 3, 2, -10, 10),
+		valid_values=[-10, -5, 0, 5.4, 10],
+		invalid_values=[-11, 10.6, 69, "some string", [2.3]]
+	)

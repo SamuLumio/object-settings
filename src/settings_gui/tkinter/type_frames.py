@@ -222,6 +222,27 @@ class Number(_Base):
 
 
 
+class Float(_Base):
+	"""Spinbox that allows to increment/decrement (or manually type in)"""
+
+	def init(self):
+		self.setting: settings.Float
+		self.variable = tk.DoubleVar()
+		self.variable_prev_value = self.variable.get()
+		self.variable_prev_value_next = self.variable.get()
+		self.widget = a.layer.Spinbox(
+			self,
+			textvariable=self.variable,
+			from_=self.setting.lower_limit,
+			to=self.setting.upper_limit,
+			format=f'%.{self.setting.precision}f'
+		)
+		self.variable.trace_add('write', self.save_from_widget)
+
+
+		
+
+
 
 
 
@@ -233,5 +254,6 @@ types = {
 	settings.MappedChoice: Choice,
 	settings.Multichoice: Multichoice,
 	settings.Path: Path,
-	settings.Number: Number
+	settings.Number: Number,
+	settings.Float: Float
 }

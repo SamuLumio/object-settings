@@ -28,3 +28,18 @@ def test_number_special_methods():
 	assert number.get() == 5
 
 
+def test_float_special_methods():
+	float = settings.Float("FloatSpecialTest", 0, 2, 0, 10000)
+	float.set(5)
+	float.increment()
+	assert float.get() == 6.0
+	float.decrement()
+	assert float.get() == 5.0
+	# Test imprecision correcting
+	float.set(0.45)
+	for i in range(1000):
+		float.increment()
+	assert float.get() == 1000.45
+
+
+

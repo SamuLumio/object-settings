@@ -1,4 +1,4 @@
-import os, typing
+import os, typing, math
 from . import base, BaseSetting as _BaseSetting
 
 
@@ -165,7 +165,7 @@ class MappedMultichoice(Multichoice):
 	``` """
 
 	def __init__(self, name, mappings: dict[typing.Any, str], default_choices: list[str], 
-	      section=base.default_section):
+		  section=base.default_section):
 		self.mappings = mappings
 		super().__init__(name, list(mappings.values()), default_choices, section)
 
@@ -301,7 +301,7 @@ class Number(_BaseSetting):
 	"""An integer that can be set or incremented and decremented"""
 
 	def __init__(self, name, default: int, lower_limit: int = 0, upper_limit: int = 100,
-	             section=base.default_section):
+				 section=base.default_section):
 		self.lower_limit = lower_limit
 		self.upper_limit = upper_limit
 		super().__init__(int, name, default, section)
@@ -331,3 +331,44 @@ class Number(_BaseSetting):
 
 	def decrement(self):
 		self.set(self.get() - 1)
+
+
+
+class Float(_BaseSetting):
+	"""A float setting that can be set or incremented and decremented"""
+
+	def __init__(self, name, default: float, presicion: int = 2, lower_limit: float = 0.0, upper_limit: float = 100.0, step_size: float = 1.0, section=base.default_section):
+		self.precision = presicion
+		self.lower_limit = lower_limit
+		self.upper_limit = upper_limit
+		self.step_size = step_size
+		super().__init__(float, name, default, section)
+
+	def validate(self, value):
+		if isinstance(value, (int, float)):
+			return super().validate(float(value)) and (self.lower_limit <= value <= self.upper_limit)
+		else:
+			return False
+
+	def get(self) -> float:
+		return float(super().get())
+
+	def set(self, new_value: float):
+		new_value = round(new_value, self.precision)
+		super().set(new_value)
+
+	@property
+	def value(self) -> float:
+		return self.get()
+
+	@value.setter
+	def value(self, new_value: float):
+		self.set(new_value)
+
+	def increment(self):
+		new_value = self.get() + self.step_size
+		self.set(min(new_value, self.upper_limit))
+
+	def decrement(self):
+		new_value = self.get() - self.step_size
+		self.set(max(new_value, self.lower_limit))

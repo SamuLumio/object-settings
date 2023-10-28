@@ -191,5 +191,7 @@ List of currently available setting types:
     A file path whose existence can be checked
 - `Number`:
     An integer that can be set or incremented and decremented
+- `Float`:
+    Like Number but, you know, as a float (with adjustable decimal precision)
 
 You can also inherit from the `BaseSetting` class to easily create custom ones.
