@@ -1,4 +1,4 @@
-import typing, os, colorsys, tkinter, platform, subprocess
+import typing, os, colorsys, tkinter, platform
 
 from ..config import config
 from . import a
@@ -47,14 +47,15 @@ def icon_button(master, icon_name: str, command):
 	if a.is_ttk():
 		if platform.system() == 'Darwin':
 			rgb = master.winfo_rgb('systemWindowBackgroundColor')
-			# rgb = subprocess.getoutput('winfo rbg . systemWindowBackgroundColor')
+			rgb = tuple(value / 65535.0 for value in rgb)
 		else:
 			hex = a.layer.Style().lookup('TButton', 'background') # type: ignore
 			hex = str(hex).removeprefix('#')
 			rgb = tuple(int(hex[i:i + 2], 16) for i in (0, 2, 4))
+			rgb = tuple(value / 100 for value in rgb)
 		hls = colorsys.rgb_to_hls(*rgb)
 		brightness = hls[1]
-		color = 'black' if brightness > 50 else 'white'
+		color = 'black' if brightness > 0.5 else 'white'
 	else:
 		color = 'black'
 
